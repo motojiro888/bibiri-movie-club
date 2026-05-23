@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>レビュー一覧 | ビビリ映画部</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="site-title-wrap">
+      <span class="site-title">ビビリ映画部</span>
+      <span class="site-subtitle">ビビリのための映画レビュー</span>
+    </a>
+    <nav class="pc-nav">
+      <a href="index.html" class="active">レビュー一覧</a>
+  <!--    <a href="#">まとめ記事</a>  -->
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="メニューを開く">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="drawer" id="drawer">
+  <a href="index.html" class="active">レビュー一覧</a>
+<!--  <a href="#">まとめ記事</a>  -->
+</nav>
+
+<!-- ===== PAGE HERO ===== -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>レビュー一覧</h1>
+    <p>全レビューを絞り込んで、安心して観られる映画を見つけよう</p>
+  </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<main>
+
+  <div class="filter-header-row">
+    <button class="filter-toggle" id="filterToggle" style="flex:1">
+      <span>🔍 絞り込む</span>
+      <span class="filter-arrow">▼</span>
+    </button>
+    <button class="help-btn" id="helpBtn" aria-label="評価の見方を表示">
+      <span class="help-icon">？</span>
+      評価の見方
+    </button>
+  </div>
+
+  <div class="filter-body" id="filterBody">
+    <div class="filter-inner">
+      <div class="filter-section">
+        <span class="filter-label">🎬 ジャンル（複数選択可）</span>
+        <div class="genre-chips" id="genreChips">
+          <span class="genre-chip active" data-genre="all">すべて</span>
+          <span class="genre-chip" data-genre="人怖">人怖</span>
+          <span class="genre-chip" data-genre="宗教">宗教</span>
+          <span class="genre-chip" data-genre="クリーチャー">クリーチャー</span>
+          <span class="genre-chip" data-genre="心霊">心霊</span>
+          <span class="genre-chip" data-genre="スプラッター">スプラッター</span>
+          <span class="genre-chip" data-genre="サイコ">サイコ</span>
+        </div>
+      </div>
+      <div class="filter-section">
+        <span class="filter-label">🎯 難易度</span>
+        <div class="btn-group" id="difficultyBtns">
+          <button class="btn-filter active" data-value="all">すべて</button>
+          <button class="btn-filter" data-value="beginner">初心者向け</button>
+          <button class="btn-filter" data-value="mid">中級</button>
+          <button class="btn-filter" data-value="advanced">上級</button>
+        </div>
+      </div>
+      <div class="filter-section">
+        <span class="filter-label">🐾 動物の安否</span>
+        <div class="btn-group" id="animalBtns">
+          <button class="btn-filter active" data-value="all">すべて</button>
+          <button class="btn-filter" data-value="safe">✅ 安全</button>
+          <button class="btn-filter" data-value="warn">⚠️ 注意</button>
+          <button class="btn-filter" data-value="danger">❌ 危険</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-count"><span id="visibleCount">12</span> 件表示中</div>
+
+  <!-- ===== CARDS GRID ===== -->
+  <div class="cards-grid" id="cardsGrid">
+  <!-- review card template Start 
+    <article class="review-card" data-genres="人怖 サイコ" data-difficulty="beginner" data-animal="safe">
+      <div class="card-img"><img src="https://placehold.co/120x120/dce8e6/3a8f82?text=透明人間" alt="透明人間"></div>
+      <div class="card-info">
+        <div class="card-title-row"><span class="card-title">透明人間</span><span class="card-year">2020</span></div>
+        <div class="card-labels"><span class="label label-beginner">✓ 初心者向け</span><span class="label label-genre">人怖</span><span class="label label-genre">サイコ</span></div>
+        <div class="card-eval">
+          <div class="eval-stars-pair">
+            <div class="eval-bikkuri"><span class="eval-key">😱 びっくり度</span><div class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span></div></div>
+            <div class="eval-bikkuri"><span class="eval-key">🩸 グロ度</span><div class="stars"><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span></div></div>
+          </div>
+          <div class="animal-row"><span class="eval-key">🐾 動物の安否</span><span class="animal-badge animal-badge-safe">✅ 安全</span></div>
+        </div>
+      </div>
+    </article>
+    review card template end -->
+
+    <a href="hereditary.html" class="review-card-link">
+      <article class="review-card" data-genres="宗教 心霊 スプラッター" data-difficulty="advanced" data-animal="warn">
+        <div class="card-img"><img src="../assets/images/hereditary.webp" alt="ヘレディタリー／継承"></div>
+        <div class="card-info">
+          <div class="card-title-row"><span class="card-title">ヘレディタリー／継承</span><span class="card-year">2018</span></div>
+          <div class="card-labels"><span class="label label-advanced">🔴 上級</span><span class="label label-genre">宗教</span><span class="label label-genre">心霊</span><span class="label label-genre">スプラッター</span></div>
+          <div class="card-eval">
+            <div class="eval-stars-pair">
+              <div class="eval-bikkuri"><span class="eval-key">😱 びっくり度</span><div class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span></div></div>
+              <div class="eval-bikkuri"><span class="eval-key">🩸 グロ度</span><div class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div>
+            </div>
+            <div class="animal-row"><span class="eval-key">🐾 動物の安否</span><span class="animal-badge animal-badge-warn">⚠️ 注意</span></div>
+          </div>
+        </div>
+      </article>
+    </a>
+
+    <a href="midsommar.html" class="review-card-link">
+      <article class="review-card" data-genres="宗教 スプラッター" data-difficulty="advanced" data-animal="warn">
+        <div class="card-img"><img src="../assets/images/midsommar.webp" alt="ミッドサマー"></div>
+        <div class="card-info">
+          <div class="card-title-row"><span class="card-title">ミッドサマー</span><span class="card-year">2019</span></div>
+          <div class="card-labels"><span class="label label-advanced">🔴 上級</span><span class="label label-genre">宗教</span><span class="label label-genre">スプラッター</span></div>
+          <div class="card-eval">
+            <div class="eval-stars-pair">
+              <div class="eval-bikkuri"><span class="eval-key">😱 びっくり度</span><div class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span></div></div>
+              <div class="eval-bikkuri"><span class="eval-key">🩸 グロ度</span><div class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span></div></div>
+            </div>
+            <div class="animal-row"><span class="eval-key">🐾 動物の安否</span><span class="animal-badge animal-badge-warn">⚠️ 注意</span></div>
+          </div>
+        </div>
+      </article>
+    </a>
+
+    <article class="review-card" data-genres="サイコ 宗教" data-difficulty="advanced" data-animal="warn">
+      <div class="card-img"><img src="assets/img/beau-is-afraid.webp" alt="ボーはおそれている"></div>
+      <div class="card-info">
+        <div class="card-title-row"><span class="card-title">ボーはおそれている</span><span class="card-year">2023</span></div>
+        <div class="card-labels"><span class="label label-advanced">🔴 上級</span><span class="label label-genre">サイコ</span><span class="label label-genre">宗教</span></div>
+        <div class="card-eval">
+          <div class="eval-stars-pair">
+            <div class="eval-bikkuri"><span class="eval-key">😱 びっくり度</span><div class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span></div></div>
+            <div class="eval-bikkuri"><span class="eval-key">🩸 グロ度</span><div class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span></div></div>
+          </div>
+          <div class="animal-row"><span class="eval-key">🐾 動物の安否</span><span class="animal-badge animal-badge-warn">⚠️ 注意</span></div>
+        </div>
+      </div>
+    </article>
+
+    
+  </div>
+
+  <div class="no-results" id="noResults">
+    <div class="no-results-icon">🔍</div>
+    <p>条件に合う映画が見つかりませんでした。<br>フィルターを変えて試してみてください。</p>
+  </div>
+
+</main>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">
+        <span class="modal-title-icon">？</span>
+        評価の見方
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="閉じる">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-item">
+        <div class="modal-item-head"><span class="modal-item-icon">😱</span><span class="modal-item-title">びっくり度</span></div>
+        <div class="modal-item-desc">ジャンプスケア・突然の大音量・急な飛び出し演出の強さ。★1：ほぼなし　★5：かなり激しい</div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-item">
+        <div class="modal-item-head"><span class="modal-item-icon">🩸</span><span class="modal-item-title">グロ度</span></div>
+        <div class="modal-item-desc">血・身体欠損・視覚的ショックシーンの強さ。★1：ほぼなし　★5：かなり強烈</div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-item">
+        <div class="modal-item-head"><span class="modal-item-icon">🐾</span><span class="modal-item-title">動物の安否</span></div>
+        <div class="modal-item-desc">映画内で動物が危険にさらされるかどうかの事前指標です。</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;">
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;background:var(--safe-bg);color:var(--safe);">✅ 安全</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;background:var(--warn-bg);color:var(--warn);">⚠️ 注意</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;background:var(--danger-bg);color:var(--danger);">❌ 危険</span>
+        </div>
+      </div>
+      <div class="modal-note">💡 すべての評価はレビュアーの主観に基づきます。あくまで参考としてご活用ください。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BACK TO TOP ===== -->
+<a class="back-to-top" href="#" id="backToTop">↑ ページトップへ戻る</a>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <img src="../assets/images/motojiro-smile.png" alt="笑っているモトジロウ" class="motojiro-img motojiro-footer">
+    <p>&copy; 2026 ビビリ映画部 — モトジロウと一緒に、安心して映画を楽しもう</p>
+  </div>
+</footer>
+
+<script>
+  const ham = document.getElementById('hamburger');
+  const drawer = document.getElementById('drawer');
+  ham.addEventListener('click', () => { ham.classList.toggle('open'); drawer.classList.toggle('open'); });
+
+  const ft = document.getElementById('filterToggle');
+  const fb = document.getElementById('filterBody');
+  ft.addEventListener('click', () => { ft.classList.toggle('open'); fb.classList.toggle('open'); });
+
+  const state = { genres: [], difficulty: 'all', animal: 'all' };
+
+  document.querySelectorAll('#genreChips .genre-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const val = chip.dataset.genre;
+      if (val === 'all') {
+        state.genres = [];
+        document.querySelectorAll('#genreChips .genre-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      } else {
+        document.querySelector('[data-genre="all"]').classList.remove('active');
+        chip.classList.toggle('active');
+        if (chip.classList.contains('active')) { state.genres.push(val); }
+        else { state.genres = state.genres.filter(g => g !== val); }
+        if (state.genres.length === 0) document.querySelector('[data-genre="all"]').classList.add('active');
+      }
+      applyFilters();
+    });
+  });
+
+  document.querySelectorAll('#difficultyBtns .btn-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#difficultyBtns .btn-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active'); state.difficulty = btn.dataset.value; applyFilters();
+    });
+  });
+
+  document.querySelectorAll('#animalBtns .btn-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#animalBtns .btn-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active'); state.animal = btn.dataset.value; applyFilters();
+    });
+  });
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('#cardsGrid .review-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const cardGenres = card.dataset.genres.split(' ');
+      const show = (state.genres.length === 0 || state.genres.some(g => cardGenres.includes(g)))
+                && (state.difficulty === 'all' || card.dataset.difficulty === state.difficulty)
+                && (state.animal === 'all'     || card.dataset.animal === state.animal);
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    document.getElementById('visibleCount').textContent = visible;
+    document.getElementById('noResults').classList.toggle('show', visible === 0);
+  }
+
+  const modalOverlay = document.getElementById('modalOverlay');
+  function openModal()  { modalOverlay.classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeModal() { modalOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+  document.getElementById('helpBtn').addEventListener('click', openModal);
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  document.getElementById('backToTop').addEventListener('click', e => {
+    e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
