@@ -1,0 +1,22 @@
+import { hereditary } from './hereditary.js';
+import { midsommar } from './midsommar.js';
+import { beauIsAfraid } from './beau-is-afraid.js';
+import { getOut } from './get-out.js';
+import { talkToMe } from './talk-to-me.js';
+import { theKillingOfASacredDeer } from './the-killing-of-a-sacred-deer.js';
+import { lamb } from './lamb.js';
+import { us } from './us.js';
+import { esther } from './esther.js';
+import { suspiria } from './suspiria.js';
+import { munasawagi } from './munasawagi.js';
+import { speaknoevil } from './speaknoevil.js';
+import { theInnocents } from './the-innocents.js';
+import { together } from './together.js';
+import { scream } from './scream.js';
+import { scaryMovie } from './scary-movie.js';
+import { substance } from './substance.js';
+import { sickOfMyself } from './sick-of-myself.js';
+import { scream2 } from './scream2.js';
+import { devilsBath } from './devils-bath.js';
+ 
+export const reviews = [hereditary, midsommar, beauIsAfraid, getOut, talkToMe, theKillingOfASacredDeer, lamb, us, esther, suspiria, munasawagi, speaknoevil, theInnocents, together, scream, scaryMovie, substance, sickOfMyself, scream2, devilsBath];

@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { reviews } from '../../data/reviews/index.js';
+
+const base = import.meta.env.BASE_URL;
+const sorted = [...reviews].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+
+function stars(count, max = 5) {
+  return Array.from({length: max}, (_, i) => `<span class="star ${i < count ? 'on' : 'off'}">★</span>`).join('');
+}
+
+const animalLabel = { safe: '✅ 安全', warn: '⚠️ 注意', danger: '❌ 危険' };
+const animalClass = { safe: 'animal-badge-safe', warn: 'animal-badge-warn', danger: 'animal-badge-danger' };
+const difficultyLabel = { beginner: '✓ 初心者向け', mid: '🟡 中級', advanced: '🔴 上級' };
+const difficultyClass = { beginner: 'label-beginner', mid: 'label-mid', advanced: 'label-advanced' };
+---
+
+<BaseLayout title="レビュー一覧 | ビビリ映画部">
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>レビュー一覧</h1>
+    <p>全レビューを絞り込んで、安心して観られる映画を見つけよう</p>
+  </div>
+</div>
+
+<main>
+
+  <div class="filter-header-row">
+    <button class="filter-toggle" id="filterToggle" style="flex:1">
+      <span>🔍 絞り込む</span>
+      <span class="filter-arrow">▼</span>
+    </button>
+    <button class="help-btn" id="helpBtn" aria-label="評価の見方を表示">
+      <span class="help-icon">？</span>
+      評価の見方
+    </button>
+  </div>
+
+  <div class="filter-body" id="filterBody">
+    <div class="filter-inner">
+      <div class="filter-section">
+        <span class="filter-label">🎬 ジャンル（複数選択可）</span>
+        <div class="genre-chips" id="genreChips">
+          <span class="genre-chip active" data-genre="all">すべて</span>
+          <span class="genre-chip" data-genre="人怖">人怖</span>
+          <span class="genre-chip" data-genre="宗教">宗教</span>
+          <span class="genre-chip" data-genre="クリーチャー">クリーチャー</span>
+          <span class="genre-chip" data-genre="心霊">心霊</span>
+          <span class="genre-chip" data-genre="スプラッター">スプラッター</span>
+          <span class="genre-chip" data-genre="サイコ">サイコ</span>
+        </div>
+      </div>
+      <div class="filter-section">
+        <span class="filter-label">🎯 難易度</span>
+        <div class="btn-group" id="difficultyBtns">
+          <button class="btn-filter active" data-value="all">すべて</button>
+          <button class="btn-filter" data-value="beginner">初心者向け</button>
+          <button class="btn-filter" data-value="mid">中級</button>
+          <button class="btn-filter" data-value="advanced">上級</button>
+        </div>
+      </div>
+      <div class="filter-section">
+        <span class="filter-label">🐾 動物の安否</span>
+        <div class="btn-group" id="animalBtns">
+          <button class="btn-filter active" data-value="all">すべて</button>
+          <button class="btn-filter" data-value="safe">✅ 安全</button>
+          <button class="btn-filter" data-value="warn">⚠️ 注意</button>
+          <button class="btn-filter" data-value="danger">❌ 危険</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-count"><span id="visibleCount">{reviews.length}</span> 件表示中</div>
+
+  <div class="cards-grid" id="cardsGrid">
+  {sorted.map(r => (
+    <a href={`${base}/reviews/${r.id}/`} class="review-card-link">
+      <article class="review-card" data-genres={r.genres.join(' ')} data-difficulty={r.difficulty} data-animal={r.animal}>
+        <div class="card-img"><img src={`${base}/${r.image}`} alt={r.title}></div>
+        <div class="card-info">
+          <div class="card-title-row"><span class="card-title">{r.title}</span><span class="card-year">{r.year}</span></div>
+          <div class="card-labels">
+            <span class={`label ${difficultyClass[r.difficulty]}`}>{difficultyLabel[r.difficulty]}</span>
+            {r.genres.map(g => <span class="label label-genre">{g}</span>)}
+          </div>
+          <div class="card-eval">
+            <div class="eval-stars-pair">
+              <div class="eval-bikkuri"><span class="eval-key">😱 びっくり度</span><div class="stars" set:html={stars(r.bikkuri)}></div></div>
+              <div class="eval-bikkuri"><span class="eval-key">🩸 グロ度</span><div class="stars" set:html={stars(r.guro)}></div></div>
+            </div>
+            <div class="animal-row"><span class="eval-key">🐾 動物の安否</span><span class={`animal-badge ${animalClass[r.animal]}`}>{animalLabel[r.animal]}</span></div>
+          </div>
+        </div>
+      </article>
+    </a>
+  ))}
+  </div>
+
+  <div class="no-results" id="noResults">
+    <div class="no-results-icon">🔍</div>
+    <p>条件に合う映画が見つかりませんでした。<br>フィルターを変えて試してみてください。</p>
+  </div>
+
+</main>
+
+<a class="back-to-top" href="#" id="backToTop">↑ ページトップへ戻る</a>
+
+<script>
+  // ── トグル ──
+  const ft = document.getElementById('filterToggle');
+  const fb = document.getElementById('filterBody');
+  ft.addEventListener('click', () => { ft.classList.toggle('open'); fb.classList.toggle('open'); });
+
+  // ── URLからフィルタ条件を読み込む ──
+  const params = new URLSearchParams(window.location.search);
+  const initGenres     = params.getAll('genre');
+  const initDifficulty = params.get('difficulty') ?? 'all';
+  const initAnimal     = params.get('animal')     ?? 'all';
+
+  // URLに条件があればフィルタパネルを自動で開く
+  if (initGenres.length > 0 || initDifficulty !== 'all' || initAnimal !== 'all') {
+    ft.classList.add('open');
+    fb.classList.add('open');
+  }
+
+  // ジャンルチップのUI復元
+  document.querySelectorAll('#genreChips .genre-chip').forEach(chip => {
+    const g = chip.dataset.genre;
+    if (initGenres.length === 0 && g === 'all') {
+      chip.classList.add('active');
+    } else if (initGenres.includes(g)) {
+      chip.classList.add('active');
+      document.querySelector('.genre-chip[data-genre="all"]').classList.remove('active');
+    } else {
+      chip.classList.remove('active');
+    }
+  });
+
+  // 難易度・動物ボタンのUI復元
+  document.querySelectorAll('#difficultyBtns .btn-filter').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.value === initDifficulty);
+  });
+  document.querySelectorAll('#animalBtns .btn-filter').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.value === initAnimal);
+  });
+
+  // ── フィルタ処理 ──
+  function applyFilters() {
+  const p      = new URLSearchParams(window.location.search);
+  const genres = p.getAll('genre');
+  const diff   = p.get('difficulty');
+  const animal = p.get('animal');
+  let visible  = 0;
+
+  document.querySelectorAll('#cardsGrid .review-card').forEach(card => {
+    const cardGenres = card.dataset.genres.split(' ');
+    const show =
+      (genres.length === 0 || genres.some(g => cardGenres.includes(g))) &&
+      (!diff   || card.dataset.difficulty === diff)  &&
+      (!animal || card.dataset.animal     === animal);
+
+    // review-card-link（親のaタグ）ごと隠す
+    const link = card.closest('.review-card-link');
+    if (link) link.classList.toggle('hidden', !show);
+
+    if (show) visible++;
+  });
+
+  document.getElementById('visibleCount').textContent = visible;
+  document.getElementById('noResults').classList.toggle('show', visible === 0);
+  }
+
+  applyFilters();
+
+  // ── クリック時：URLを更新してフィルタ再適用 ──
+  document.querySelectorAll('#genreChips .genre-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const g = chip.dataset.genre;
+      const p = new URLSearchParams(window.location.search);
+      if (g === 'all') {
+        p.delete('genre');
+        document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      } else {
+        document.querySelector('.genre-chip[data-genre="all"]').classList.remove('active');
+        chip.classList.toggle('active');
+        p.delete('genre');
+        document.querySelectorAll('.genre-chip.active').forEach(c => {
+          if (c.dataset.genre !== 'all') p.append('genre', c.dataset.genre);
+        });
+        if (!document.querySelector('.genre-chip:not([data-genre="all"]).active')) {
+          document.querySelector('.genre-chip[data-genre="all"]').classList.add('active');
+          p.delete('genre');
+        }
+      }
+      history.replaceState(null, '', `?${p.toString()}`);
+      applyFilters();
+    });
+  });
+
+  document.querySelectorAll('#difficultyBtns .btn-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#difficultyBtns .btn-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const p = new URLSearchParams(window.location.search);
+      if (btn.dataset.value === 'all') p.delete('difficulty');
+      else p.set('difficulty', btn.dataset.value);
+      history.replaceState(null, '', `?${p.toString()}`);
+      applyFilters();
+    });
+  });
+
+  document.querySelectorAll('#animalBtns .btn-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#animalBtns .btn-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const p = new URLSearchParams(window.location.search);
+      if (btn.dataset.value === 'all') p.delete('animal');
+      else p.set('animal', btn.dataset.value);
+      history.replaceState(null, '', `?${p.toString()}`);
+      applyFilters();
+    });
+  });
+
+  document.getElementById('backToTop').addEventListener('click', e => {
+    e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</BaseLayout>

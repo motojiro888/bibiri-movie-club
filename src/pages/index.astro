@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { reviews } from '../data/reviews/index.js';
+
+const base = import.meta.env.BASE_URL;
+const totalCount = reviews.length;
+---
+
+<BaseLayout title="ビビリ映画部 | ビビリのための映画レビュー">
+
+<section class="hero">
+  <div class="hero-inner">
+    <img src={`${base}/assets/images/motojiro-smile.png`} alt="笑っているモトジロウ" class="motojiro-img motojiro-hero">
+    <h2>怖い映画を、安心して選ぼう</h2>
+    <p>心霊・スプラッター・カルトまで全{totalCount}作品。<br>「びっくり度」「グロ度」「動物の安否」まで正直レビュー。ビビリのあなたでも大丈夫。</p>
+  </div>
+</section>
+
+<main>
+
+  <div class="filter-wrap">
+    <div class="filter-body open" id="filterBody">
+      <div class="filter-inner">
+        <div class="filter-section">
+          <span class="filter-label">🎬 ジャンル（複数選択可）</span>
+          <div class="genre-chips" id="genreChips">
+            <span class="genre-chip active" data-genre="all">すべて</span>
+            <span class="genre-chip" data-genre="人怖">人怖</span>
+            <span class="genre-chip" data-genre="宗教">宗教</span>
+            <span class="genre-chip" data-genre="クリーチャー">クリーチャー</span>
+            <span class="genre-chip" data-genre="心霊">心霊</span>
+            <span class="genre-chip" data-genre="スプラッター">スプラッター</span>
+            <span class="genre-chip" data-genre="サイコ">サイコ</span>
+          </div>
+        </div>
+        <div class="filter-section">
+          <span class="filter-label">🎯 難易度</span>
+          <div class="btn-group" id="difficultyBtns">
+            <button class="btn-filter active" data-value="all">すべて</button>
+            <button class="btn-filter" data-value="beginner">初心者向け</button>
+            <button class="btn-filter" data-value="mid">中級</button>
+            <button class="btn-filter" data-value="advanced">上級</button>
+          </div>
+        </div>
+        <div class="filter-section">
+          <span class="filter-label">🐾 動物の安否</span>
+          <div class="btn-group" id="animalBtns">
+            <button class="btn-filter active" data-value="all">すべて</button>
+            <button class="btn-filter" data-value="safe">✅ 安全</button>
+            <button class="btn-filter" data-value="warn">⚠️ 注意</button>
+            <button class="btn-filter" data-value="danger">❌ 危険</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="search-btn" id="searchBtn">🔍 この条件で映画を探す</button>
+  </div>
+
+  <a href={`${base}/reviews/`} class="more-btn">全作品を見る（{totalCount}件）→</a>
+
+</main>
+
+<a class="back-to-top" href="#" id="backToTop">↑ ページトップへ戻る</a>
+
+<script>
+  const state = { genres: [], difficulty: 'all', animal: 'all' };
+
+  document.querySelectorAll('#genreChips .genre-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const val = chip.dataset.genre;
+      if (val === 'all') {
+        state.genres = [];
+        document.querySelectorAll('#genreChips .genre-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      } else {
+        document.querySelector('[data-genre="all"]').classList.remove('active');
+        chip.classList.toggle('active');
+        if (chip.classList.contains('active')) { state.genres.push(val); }
+        else { state.genres = state.genres.filter(g => g !== val); }
+        if (state.genres.length === 0) document.querySelector('[data-genre="all"]').classList.add('active');
+      }
+    });
+  });
+
+  document.querySelectorAll('#difficultyBtns .btn-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#difficultyBtns .btn-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.difficulty = btn.dataset.value;
+    });
+  });
+
+  document.querySelectorAll('#animalBtns .btn-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#animalBtns .btn-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.animal = btn.dataset.value;
+    });
+  });
+
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    const p = new URLSearchParams();
+    state.genres.forEach(g => p.append('genre', g));
+    if (state.difficulty !== 'all') p.set('difficulty', state.difficulty);
+    if (state.animal !== 'all') p.set('animal', state.animal);
+    const qs = p.toString();
+    window.location.href = `reviews/${qs ? '?' + qs : ''}`;
+  });
+
+  document.getElementById('backToTop').addEventListener('click', e => {
+    e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</BaseLayout>

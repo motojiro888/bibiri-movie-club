@@ -1,0 +1,104 @@
+---
+const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+{description && <meta name="description" content={description} />}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href={`${base}/assets/css/style.css`}>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href={`${base}/`} class="site-title-wrap">
+      <span class="site-title">ビビリ映画部</span>
+      <span class="site-subtitle">ビビリのための映画レビュー</span>
+    </a>
+    <nav class="pc-nav">
+      <a href={`${base}/reviews/`}>レビュー一覧</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="メニューを開く">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="drawer" id="drawer">
+  <a href={`${base}/reviews/`}>レビュー一覧</a>
+</nav>
+
+<slot />
+
+<footer>
+  <div class="footer-inner">
+  <img src={`${base}/assets/images/motojiro-smile.png`} alt="笑っているモトジロウ" class="motojiro-img motojiro-footer">
+    <p>&copy; 2026 ビビリ映画部 — モトジロウと一緒に、安心して映画を楽しもう</p>
+  </div>
+</footer>
+
+<script>
+  const ham = document.getElementById('hamburger');
+  const drawer = document.getElementById('drawer');
+  ham.addEventListener('click', () => { ham.classList.toggle('open'); drawer.classList.toggle('open'); });
+
+  const modalOverlay = document.getElementById('modalOverlay');
+  function openModal()  { modalOverlay.classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeModal() { modalOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  document.querySelectorAll('#helpBtn, .help-btn').forEach(btn => {
+  btn.addEventListener('click', openModal);
+});
+</script>
+
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">
+        <span class="modal-title-icon">？</span>
+        評価の見方
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="閉じる">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-item">
+        <div class="modal-item-head"><span class="modal-item-icon">😱</span><span class="modal-item-title">びっくり度</span></div>
+        <div class="modal-item-desc">ジャンプスケア・突然の大音量・急な飛び出し演出の強さ。★1：ほぼなし ／ ★5：かなり激しい</div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-item">
+        <div class="modal-item-head"><span class="modal-item-icon">🩸</span><span class="modal-item-title">グロ度</span></div>
+        <div class="modal-item-desc">血・身体欠損・視覚的ショックシーンの強さ。★1：ほぼなし ／ ★5：かなり強烈</div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-item">
+        <div class="modal-item-head"><span class="modal-item-icon">🧠</span><span class="modal-item-title">精神ダメージ</span></div>
+        <div class="modal-item-desc">心理的圧迫・日常侵食・後引き度の強さ。★1：ほぼなし ／ ★5：観後もじわじわくる</div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-item">
+        <div class="modal-item-head"><span class="modal-item-icon">🐾</span><span class="modal-item-title">動物の安否</span></div>
+        <div class="modal-item-desc">映画内で動物が危険にさらされるかどうかの事前指標です。</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;">
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;background:var(--safe-bg);color:var(--safe);">✅ 安全</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;background:var(--warn-bg);color:var(--warn);">⚠️ 注意</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;background:var(--danger-bg);color:var(--danger);">❌ 危険</span>
+        </div>
+      </div>
+      <div class="modal-note">💡 すべての評価はレビュアーの主観に基づきます。あくまで参考としてご活用ください。</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { reviews } from '../../data/reviews/index.js';
+
+export function getStaticPaths() {
+  return reviews.map(r => ({ params: { id: r.id }, props: { review: r } }));
+}
+
+const { review } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+function stars(count, max = 5) {
+  return Array.from({length: max}, (_, i) => `<span class="star ${i < count ? 'on' : 'off'}">★</span>`).join('');
+}
+
+const animalSectionClass = { safe: '', warn: 'animal-warn', danger: 'animal-danger' };
+const levelClass = { high: 'level-high', mid: 'level-mid', low: 'level-low' };
+---
+<BaseLayout title={`【ネタバレなし】${review.title}（${review.year}）怖さレビュー｜ビビリ映画部`} description={`${review.title}のびっくり度・グロ度・動物安否を正直レビュー。ビビリでも観られる？怖さの性質・攻略ガイド付き。`}>
+
+<nav class="breadcrumb" aria-label="パンくず">
+  <a href={`${base}/`}>ホーム</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href={`${base}/reviews/`}>レビュー一覧</a>
+  <span class="breadcrumb-sep">›</span>
+  <span>{review.title}（{review.year}）</span>
+</nav>
+
+<div class="article-wrap">
+
+  <p style="font-size:0.75rem; color:var(--text-light); text-align:right; margin-bottom:8px;">更新日：{review.updatedAt}</p>
+
+  <div class="movie-header">
+    <div class="movie-eyecatch">
+      <img src={`${base}/${review.image}`} alt={`${review.title}（${review.year}）`}>
+    </div>
+    <div class="movie-title-area">
+      <h1 class="movie-main-title">{review.title}</h1>
+      <p class="movie-title-sub">{review.titleEn}</p>
+    </div>
+    <div class="movie-meta-chips">
+      <span class="meta-chip">📅 {review.year}年</span>
+      <span class="meta-chip">⏱ {review.meta.runtime}分</span>
+      <span class="meta-chip">🎬 {review.meta.genre}</span>
+      <span class="meta-chip">🌍 {review.meta.country}</span>
+    </div>
+  </div>
+
+  <div class="seo-summary">
+    <div class="seo-summary-title">
+      🔍 この映画の怖さまとめ
+      <button class="help-inline" id="helpBtn" aria-label="評価の見方">？</button>
+    </div>
+    <div class="seo-rows">
+      <div class="seo-row">
+        <span class="seo-label">😱 びっくり度</span>
+        <div class="stars-row" set:html={stars(review.bikkuri)}></div>
+      </div>
+      <div class="seo-row">
+        <span class="seo-label">🩸 グロ度</span>
+        <div class="stars-row" set:html={stars(review.guro)}></div>
+      </div>
+      <div class="seo-row">
+        <span class="seo-label">🧠 精神ダメージ</span>
+        <div class="stars-row" set:html={stars(review.fearCards.find(f => f.title === '精神ダメージ')?.score ?? 0)}></div>
+      </div>
+      <div class="seo-row">
+        <span class="seo-label">🐾 動物の安否</span>
+        <span class={`animal-badge animal-badge-${review.animal}`}>{review.animalLabel}</span>
+      </div>
+    </div>
+    <div class="seo-verdict">
+      🎯 結論：{review.verdict}
+    </div>
+  </div>
+
+  <nav class="toc-block" aria-label="目次">
+    <div class="toc-title">📋 目次</div>
+    <ol class="toc-list">
+      <li><a href="#section-fear"><span class="toc-num">1</span>怖さ分析</a></li>
+      <li><a href="#section-animal"><span class="toc-num">2</span>動物の安否</a></li>
+      <li><a href="#section-guide"><span class="toc-num">3</span>防衛タイムスタンプ</a></li>
+      <li><a href="#section-fit"><span class="toc-num">4</span>向いてる人 / 向いてない人</a></li>
+      <li><a href="#section-info"><span class="toc-num">5</span>作品情報</a></li>
+    </ol>
+  </nav>
+
+{review.synopsis && (
+    <div class="section-block" id="section-synopsis">
+      <h2 class="section-heading">📖 あらすじ</h2>
+      <p class="article-lead">{review.synopsis}</p>
+    </div>
+  )}
+
+  <div class="section-block" id="section-fear">
+    <h2 class="section-heading">恐怖の性質（ネタバレなし）</h2>
+    <p class="article-lead">この映画の怖さはいくつかの要素が組み合わさっています。それぞれを事前に知っておくことで、心の準備ができます。</p>
+    <div class="fear-grid">
+      {review.fearCards.map(card => (
+        <div class="fear-card">
+          <div class="fear-card-head">
+            <span class="fear-icon">{card.icon}</span>
+            <span class="fear-card-title">{card.title}</span>
+            <div class="fear-meter stars-row" style="margin-left:auto" set:html={stars(card.score)}></div>
+          </div>
+          <div class="fear-card-body">{card.body}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="section-block" id="section-animal">
+    <h2 class="section-heading">🐾 動物の安否（重要）</h2>
+    <div class={`animal-section-card ${animalSectionClass[review.animal]}`}>
+      <div class="animal-section-head">
+        <span class="fear-icon" style="font-size:1.4rem">🐾</span>
+        <span class={`animal-big-badge animal-badge-${review.animal}`}>{review.animalLabel}</span>
+      </div>
+      <p class="animal-desc">{review.animalDesc}</p>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-guide">
+    <h2 class="section-heading">🛡️ ビビリ攻略ガイド</h2>
+    <p class="article-lead">これを知っておけば少し楽に観られます。危険ポイントをご案内。</p>
+    <div class="timestamp-list">
+      {review.timestamps.map(ts => (
+        <div class="timestamp-item">
+          <span class="timestamp-time">{ts.time}</span>
+          <span class="timestamp-text">{ts.text}</span>
+          <span class={`timestamp-level ${levelClass[ts.level]}`}>{ts.level === 'high' ? '要注意' : ts.level === 'mid' ? '注意' : '低'}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h2 class="section-heading">モト次郎のひとこと感想</h2>
+    <div class="motojiro-casual">
+      <img src={`${base}/${review.motojiroImg}`} alt={review.motojiroAlt} class="motojiro-img motojiro-review">
+      <div class="casual-bubble" set:html={review.motojiroComment}></div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-fit">
+    <h2 class="section-heading">向いてる人 / 向いてない人</h2>
+    <div class="fit-grid">
+      <div class="fit-card fit-ok">
+        <div class="fit-card-head">✅ こんな人におすすめ</div>
+        <ul class="fit-list">
+          {review.fitOk.map(item => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div class="fit-card fit-ng">
+        <div class="fit-card-head">❌ こんな人は注意</div>
+        <ul class="fit-list">
+          {review.fitNg.map(item => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-info">
+    <h2 class="section-heading">作品情報</h2>
+    <table class="work-info-table">
+      <tr><th>タイトル</th><td>{review.title}（{review.titleEn}）</td></tr>
+      <tr><th>公開年</th><td>{review.year}年</td></tr>
+      <tr><th>監督</th><td>{review.meta.director}</td></tr>
+      <tr><th>主演</th><td>{review.meta.cast}</td></tr>
+      <tr><th>制作国</th><td>{review.meta.country}</td></tr>
+      <tr><th>上映時間</th><td>{review.meta.runtime}分</td></tr>
+    </table>
+  </div>
+
+  <div class="related-section">
+    <a class="list-btn" href={`${base}/reviews/`}>← レビュー一覧を見る</a>
+    <a class="back-to-top" href="#" id="backToTop">↑ ページトップへ戻る</a>
+  </div>
+
+</div>
+
+<script>
+  document.getElementById('backToTop').addEventListener('click', e => {
+    e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</BaseLayout>
