@@ -18,5 +18,11 @@ import { substance } from './substance.js';
 import { sickOfMyself } from './sick-of-myself.js';
 import { scream2 } from './scream2.js';
 import { devilsBath } from './devils-bath.js';
+import { antichrist } from './antichrist.js';
+import { inlandEmpire } from './inland-empire.js';
+import { softAndQuiet } from './soft-and-quiet.js';
+import { girlWithNeedle } from './girl-with-needle.js';
+import { mother } from './mother.js';
+import { frewaka } from './frewaka.js';
  
-export const reviews = [hereditary, midsommar, beauIsAfraid, getOut, talkToMe, theKillingOfASacredDeer, lamb, us, esther, suspiria, munasawagi, speaknoevil, theInnocents, together, scream, scaryMovie, substance, sickOfMyself, scream2, devilsBath];
+export const reviews = [hereditary, midsommar, beauIsAfraid, getOut, talkToMe, theKillingOfASacredDeer, lamb, us, esther, suspiria, munasawagi, speaknoevil, theInnocents, together, scream, scaryMovie, substance, sickOfMyself, scream2, devilsBath, antichrist, inlandEmpire, softAndQuiet, girlWithNeedle, mother, frewaka];
