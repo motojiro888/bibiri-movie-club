@@ -24,5 +24,6 @@ import { softAndQuiet } from './soft-and-quiet.js';
 import { girlWithNeedle } from './girl-with-needle.js';
 import { mother } from './mother.js';
 import { frewaka } from './frewaka.js';
- 
-export const reviews = [hereditary, midsommar, beauIsAfraid, getOut, talkToMe, theKillingOfASacredDeer, lamb, us, esther, suspiria, munasawagi, speaknoevil, theInnocents, together, scream, scaryMovie, substance, sickOfMyself, scream2, devilsBath, antichrist, inlandEmpire, softAndQuiet, girlWithNeedle, mother, frewaka];
+import { m3gan } from './m3gan.js';
+
+export const reviews = [hereditary, midsommar, beauIsAfraid, getOut, talkToMe, theKillingOfASacredDeer, lamb, us, esther, suspiria, munasawagi, speaknoevil, theInnocents, together, scream, scaryMovie, substance, sickOfMyself, scream2, devilsBath, antichrist, inlandEmpire, softAndQuiet, girlWithNeedle, mother, frewaka, m3gan];

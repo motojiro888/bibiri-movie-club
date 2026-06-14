@@ -363,4 +363,18 @@ export const reviews = [
     publishedAt: '2026-06-14',
     updatedAt: '2026-06-14',
   },
+  {
+    id: 'm3gan',
+    title: 'ミーガン',
+    titleEn: 'M3GAN',
+    year: 2023,
+    genres: ['SFホラー', 'サイコ'],
+    difficulty: 'beginner',
+    animal: 'warn',
+    bikkuri: 3,
+    guro: 2,
+    image: '/bibiri-movie-club/assets/images/m3gan.webp',
+    publishedAt: '2026-06-14',
+    updatedAt: '2026-06-14',
+  },
 ];
