@@ -377,4 +377,18 @@ export const reviews = [
     publishedAt: '2026-06-14',
     updatedAt: '2026-06-14',
   },
+  {
+    id: 'scream3',
+    title: 'スクリーム3',
+    titleEn: 'Scream 3',
+    year: 2000,
+    genres: ['人怖', 'スリラー'],
+    difficulty: 'beginner',
+    animal: 'safe',
+    bikkuri: 3,
+    guro: 2,
+    image: '/bibiri-movie-club/assets/images/scream3.webp',
+    publishedAt: '2026-06-15',
+    updatedAt: '2026-06-15',
+  },
 ];
