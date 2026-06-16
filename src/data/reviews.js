@@ -391,4 +391,18 @@ export const reviews = [
     publishedAt: '2026-06-15',
     updatedAt: '2026-06-15',
   },
+  {
+    id: 'nope',
+    title: 'NOPE／ノープ',
+    titleEn: 'Nope',
+    year: 2022,
+    genres: ['SFホラー', 'クリーチャー'],
+    difficulty: 'mid',
+    animal: 'warn',
+    bikkuri: 3,
+    guro: 2,
+    image: '/bibiri-movie-club/assets/images/nope.webp',
+    publishedAt: '2026-06-16',
+    updatedAt: '2026-06-16',
+  },
 ];
