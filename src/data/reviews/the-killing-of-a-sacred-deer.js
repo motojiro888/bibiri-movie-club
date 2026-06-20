@@ -14,7 +14,7 @@ export const theKillingOfASacredDeer = {
   motojiroImg: '/assets/images/motojiro-sweating.png',
   motojiroAlt: '汗をかくモトジロウ',
   publishedAt: '2026-06-08',
-  updatedAt: '2026-06-08',
+  updatedAt: '2026-06-19',
   synopsis: '心臓外科医のスティーブンは、かつて手術で父親を死なせた少年マーティンと密かに交流を続けていた。ある日マーティンが告げた「呪い」が現実となり始め、一家は選択を迫られていく。',
   meta: {
     runtime: 121,
@@ -23,7 +23,7 @@ export const theKillingOfASacredDeer = {
     director: 'ヨルゴス・ランティモス',
     cast: 'コリン・ファレル、バリー・コーガン',
   },
-  verdict: '派手なホラーではないのに異様に気持ち悪い。観終わったあとも嫌な感覚が残るタイプ。',
+  verdict: '派手なホラーではないのに異様に気持ち悪い。冒頭の手術シーンから飛ばしてくるが、本体は終盤までじわじわ来る精神的な怖さ。観終わったあとも嫌な感覚が残るタイプ。',
   fearCards: [
     {
       icon: '😱',
@@ -35,7 +35,7 @@ export const theKillingOfASacredDeer = {
       icon: '🩸',
       title: 'グロ度',
       score: 2,
-      body: '血や痛々しい描写はあるけど、グロ映画というほどではない。むしろ淡々と映されることで妙なリアルさがあった。',
+      body: '冒頭、開いた心臓を縫合する生々しい映像から始まるのでいきなり面食らう。それ以降は淡々とした描写が中心で、グロ映画というほどではないが、終盤にもう一段強い場面が来る。',
     },
     {
       icon: '🧠',
@@ -51,9 +51,9 @@ export const theKillingOfASacredDeer = {
     },
   ],
   timestamps: [
-    { time: '開始直後', text: '独特な空気感がすでに始まっている。会話の間や話し方に違和感を感じ始める。', level: 'low' },
-    { time: '中盤以降', text: '精神的な圧迫感が強くなる。状況の異常さが加速していく。', level: 'mid' },
-    { time: '終盤', text: 'かなりしんどい展開。精神的に追い詰められるので要注意。', level: 'high' },
+    { time: '開始直後', text: '開いた心臓を縫合する生々しい映像から始まる、本作の象徴的なオープニング。', level: 'mid' },
+    { time: '開始50分前後', text: '原因不明の麻痺症状が家族に現れ始める。ここから精神的な圧迫感が一気に強くなる。', level: 'mid' },
+    { time: '終盤', text: '目隠しをして銃を乱射するという、本編で最も精神的にしんどい場面を迎える。要注意。', level: 'high' },
   ],
   motojiroComment: 'バリー・コーガンの演技が本当にすごい。何をしていても気持ち悪いのに目が離せない。あとパスタの食べ方が妙に印象に残る。<strong>『ミッドサマー』みたいな「なんか変だな……」が好きな人には刺さると思う。</strong>',
   fitOk: [

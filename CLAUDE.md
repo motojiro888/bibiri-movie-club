@@ -35,124 +35,17 @@ public/
     images/
       *.webp            ← 映画サムネイル
       motojiro-*.png    ← マスコットキャラ画像
+
+.clauderules/
+  detail-page.md        ← 詳細ページ（[id].astro）の禁止事項・構成ルール
+  review-schema.md       ← レビュー追加手順・データ仕様
+  review-csv.md           ← reviews-list.csv 更新ルール
+  timestamps.md             ← タイムスタンプ生成ルール
+  comparison-style.md        ← 比較表現・擬音語ルール
+  consistency-check.md        ← レビュー整合性チェック
 ```
 
----
-
-## レビュー追加の手順（3ファイル更新）
-
-新しい映画レビューを追加するときは、必ず以下の3ファイルをすべて更新する。
-
-### ① `src/data/reviews/[film-id].js`（詳細データ）
-
-```js
-export const filmId = {
-  id: 'film-id',                     // URLスラッグ（ハイフン区切り英数字）
-  title: '日本語タイトル',
-  titleEn: 'English Title',
-  year: 2024,
-  genres: ['ジャンル1', 'ジャンル2'],
-  difficulty: 'mid',                 // beginner / mid / advanced
-  animal: 'safe',                    // safe / warn / danger
-  animalLabel: '✅ 安全',            // ✅ 安全 / ⚠️ 注意 / ❌ 危険
-  animalDesc: '動物に関する説明文',
-  bikkuri: 3,                        // 1〜5
-  guro: 2,                           // 1〜5
-  image: '/assets/images/film-id.webp',      // 相対パス（/bibiri-movie-club/ は不要）
-  motojiroImg: '/assets/images/motojiro-excited.png',
-  motojiroAlt: 'モトジロウの説明',
-  publishedAt: 'YYYY-MM-DD',
-  updatedAt: 'YYYY-MM-DD',
-  synopsis: 'あらすじ',
-  meta: {
-    runtime: 110,
-    genre: 'ジャンル表示文字列',
-    country: '制作国',
-    director: '監督名',
-    cast: '主演俳優名',
-  },
-  verdict: '一言結論',
-  fearCards: [
-    { icon: '😱', title: 'びっくり度',   score: 3, body: '説明文' },
-    { icon: '🩸', title: 'グロ度',       score: 2, body: '説明文' },
-    { icon: '🧠', title: '精神ダメージ', score: 4, body: '説明文' },
-    { icon: '🌃', title: '日常侵食度',   score: 3, body: '説明文' },
-  ],
-  timestamps: [
-    { time: '開始30分前後', text: '説明', level: 'high' },  // high / mid / low
-  ],
-  motojiroComment: '本文（<strong>タグ可）',
-  fitOk: ['おすすめできる人の条件'],
-  fitNg: ['注意が必要な人の条件'],
-};
-```
-
-**パス注意：** 詳細ファイルの `image` と `motojiroImg` は `/assets/images/...` と書く（`/bibiri-movie-club/` プレフィックスは不要）。
-
----
-
-### ② `src/data/reviews/index.js`（バレルファイル）
-
-import と export の配列に1行ずつ追加する。**順番は publishedAt の昇順が望ましい。**
-
-```js
-import { filmId } from './film-id.js';   // 追加
-export const reviews = [..., filmId];     // 配列末尾に追加
-```
-
----
-
-### ③ `src/data/reviews.js`（カード用フラット配列）
-
-一覧・フィルター・カード表示に使うファイル。詳細ファイルより**フィールドが少ない**。
-
-```js
-{
-  id: 'film-id',
-  title: '日本語タイトル',
-  titleEn: 'English Title',
-  year: 2024,
-  genres: ['ジャンル1', 'ジャンル2'],
-  difficulty: 'mid',
-  animal: 'safe',
-  bikkuri: 3,
-  guro: 2,
-  image: '/bibiri-movie-club/assets/images/film-id.webp',  // ← ここだけフルパス
-  publishedAt: 'YYYY-MM-DD',
-  updatedAt: 'YYYY-MM-DD',
-},
-```
-
-**パス注意：** `reviews.js` の `image` は `/bibiri-movie-club/assets/images/...` とフルパスで書く。
-
----
-
-## データ仕様まとめ
-
-| フィールド | 型 | 値の選択肢 |
-|---|---|---|
-| `difficulty` | string | `beginner` / `mid` / `advanced` |
-| `animal` | string | `safe` / `warn` / `danger` |
-| `animalLabel` | string | `✅ 安全` / `⚠️ 注意` / `❌ 危険` |
-| `bikkuri` | number | 1〜5 |
-| `guro` | number | 1〜5 |
-| `fearCards[].score` | number | 1〜5 |
-| `timestamps[].level` | string | `high` / `mid` / `low` |
-
-### fearCards の順番（必ずこの順番で4枚）
-1. びっくり度（😱）
-2. グロ度（🩸）
-3. 精神ダメージ（🧠）
-4. 日常侵食度（🌃）
-
-### motojiroImg の選択肢
-| ファイル名 | 使用シーン |
-|---|---|
-| `motojiro-soul-out.png` | 最上級のダメージ（ヘレディタリー級） |
-| `motojiro-shocked.png` | 衝撃・ショック系 |
-| `motojiro-scared.png` | 怖い系 |
-| `motojiro-sweating.png` | 不穏・じわじわ系（最多） |
-| `motojiro-excited.png` | 楽しめる・入門向け |
+レビュー関連の詳細ルールは `.clauderules/` 配下に分割している。該当ファイル（`src/data/reviews/*.js` など）を読み書きするタイミングで自動的に読み込まれる。
 
 ---
 
@@ -161,25 +54,6 @@ export const reviews = [..., filmId];     // 配列末尾に追加
 - `reviews.js` の配列順 = 一覧ページの表示順
 - ソートキーは `publishedAt`（編集時の `updatedAt` 変更で順番が変わらないようにするため）
 - 新しい映画は配列の末尾に追加する
-
----
-
-## 禁止事項（詳細ページ `[id].astro`）
-
-- class名の変更・追加
-- CSS の追加
-- 既存 section の id・class の変更
-- 不要な div の追加
-- `section-spoiler` ブロックの追加（永久に除外）
-- `motojiro-block`（verdict セクション）の追加（除外済み）
-
-### 詳細ページのセクション構成（この順番を維持）
-
-1. `#section-fear` — 恐怖の性質
-2. `#section-animal` — 動物の安否
-3. `#section-guide` — 防衛タイムスタンプ
-4. `#section-fit` — 向いてる人/向いてない人
-5. `#section-info` — 作品情報
 
 ---
 
@@ -212,6 +86,8 @@ const base = import.meta.env.BASE_URL;
 3. src/data/reviews.js の配列末尾にカードデータを追加
 ```
 
+詳細なフィールド仕様・コード例は `.clauderules/review-schema.md` を参照。
+
 ### 既存レビューの修正
 
 ```
@@ -230,24 +106,19 @@ npm run deploy
 
 GitHub Pages に自動デプロイされる。ビルド成果物は `dist/` に出力され、`gh-pages` ブランチにプッシュされる。
 
----
-
-## あらすじ（synopsis）のルール
-
-- ネタバレなし
-- 150字以内
-- 日本語
+**公開前確認ルール：** レビュー追加・修正作業（3ファイル更新＋`reviews-list.csv`＋`サイト改善ログ.md`）が完了した時点で作業を止める。`npm run deploy` は人間からの明示的な指示があるまで実行しない。
 
 ---
 
-## レビュー管理CSV（reviews-list.csv）のルール
+## 改善ログ自動更新ルール
 
-レビューを追加・更新するたびに、プロジェクトルートの
-reviews-list.csv も必ず更新すること。
-
-カラム順：
-タイトル, 公開状況, 公開日, 更新日, ジャンル1, ジャンル2, びっくり度, グロ度, 精神ダメージ, 動物安否, 映画公開年, 上映時間（分）, URL
-
-- 公開状況は空欄のままにする
-- URLは https://motojiro888.github.io/bibiri-movie-club/reviews/[id]/
-
+- サイトに修正・変更を加えた場合、`reviews-list.csv` と同様に、`サイト改善ログ.md` への追記も指示なしで自動的に行う。
+- 追記項目：日付／変更タイトル／変更の大きさ／対象ツール／変更内容／変更理由
+- **変更の大きさ**は「大／中／小」の3段階で判定する。
+  - 大：サイト構造・運用フロー自体が変わる規模の変更
+  - 中：単一機能の追加やデータ管理方法の変更など
+  - 小：表記修正・運用ルールの明文化など軽微な変更
+- **対象ツール**は「Claude Code／Claude.aiチャット／手動」のいずれかを記載する。
+- ファイル冒頭の「目次（一覧・フィルター用）」テーブルにも、追記した内容を1行追加する。詳細ログ本文だけでなく、目次テーブルの更新も忘れないこと。
+- 新しいログは詳細ログ・目次テーブルともに末尾に追加する（既存ログの並び順は変更しない）。
+- 三ファイルルール・CSV更新と同じく、これも作業完了の必須条件として扱う（忘れてはいけない）

@@ -14,7 +14,7 @@ export const theInnocents = {
   motojiroImg: '/assets/images/motojiro-shocked.png',
   motojiroAlt: 'ショックを受けたモトジロウ',
   publishedAt: '2026-06-10',
-  updatedAt: '2026-06-10',
+  updatedAt: '2026-06-19',
   synopsis: 'ノルウェーの集合住宅に越してきた少女イーダは、近所の子供たちと友達になる。夏休みの無邪気な遊びの中で、子供たちが超能力に目覚めていく。しかしその力は、純粋さと残酷さの両面を持っていた。',
   meta: {
     runtime: 117,
@@ -51,9 +51,9 @@ export const theInnocents = {
     },
   ],
   timestamps: [
-    { time: '開始20分前後', text: '動物に関するつらい描写あり', level: 'high' },
-    { time: '中盤', text: '子ども同士の関係がどんどん不穏になる', level: 'mid' },
-    { time: '終盤', text: '精神的に重い場面が続く。ビビリはここから要注意', level: 'high' },
+    { time: '開始20分前後', text: '野良猫が関わる、本作で最もつらい動物描写がある。物語の空気が一気に変わる転換点。', level: 'high' },
+    { time: '開始50分前後', text: '子ども同士の力関係が崩れ、一方が一方を支配するような不穏な展開が増えてくる。', level: 'mid' },
+    { time: '開始1時間40分前後', text: '感情と能力が抑えきれなくなり、精神的に重い対決が続く。ビビリはここから要注意。', level: 'high' },
   ],
   motojiroComment: '『胸騒ぎ』が好きな人なら刺さると思う。ただ、『胸騒ぎ』が大人の常識や空気感でじわじわ追い詰めてくる作品なら、こっちは子どもの残酷さで殴ってくる感じ。<strong>猫のシーンも含めてかなりしんどかったし、観終わったあとも嫌な気持ちが長く残った。個人的にはかなり要注意作品。</strong>',
   fitOk: [
