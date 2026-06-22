@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { reviews } from '../../data/reviews/index.js';
+import { reviews as reviewsSummary } from '../../data/reviews.js';
 
 export function getStaticPaths() {
   return reviews.map(r => ({ params: { id: r.id }, props: { review: r } }));
@@ -15,6 +16,29 @@ function stars(count, max = 5) {
 
 const animalSectionClass = { safe: '', warn: 'animal-warn', danger: 'animal-danger' };
 const levelClass = { high: 'level-high', mid: 'level-mid', low: 'level-low' };
+
+const difficultyNum = { beginner: 1, mid: 2, advanced: 3 };
+const relatedReviews = reviewsSummary
+  .filter(r => r.id !== review.id)
+  .map(r => {
+    let score = r.genres.filter(g => review.genres.includes(g)).length;
+    if (r.meta?.director && review.meta.director && r.meta.director === review.meta.director) score += 0.5;
+    return { ...r, score };
+  })
+  .filter(r => r.score > 0)
+  .sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    const diffA = Math.abs((difficultyNum[a.difficulty] ?? 2) - (difficultyNum[review.difficulty] ?? 2));
+    const diffB = Math.abs((difficultyNum[b.difficulty] ?? 2) - (difficultyNum[review.difficulty] ?? 2));
+    if (diffA !== diffB) return diffA - diffB;
+    return b.year - a.year;
+  })
+  .slice(0, 4);
+
+const difficultyLabel = { beginner: '✓ 初心者向け', mid: '🟡 中級', advanced: '🔴 上級' };
+const difficultyClass = { beginner: 'label-beginner', mid: 'label-mid', advanced: 'label-advanced' };
+const animalLabelMap = { safe: '✅ 安全', warn: '⚠️ 注意', danger: '❌ 危険' };
+const animalClass = { safe: 'animal-badge-safe', warn: 'animal-badge-warn', danger: 'animal-badge-danger' };
 ---
 <BaseLayout title={`【ネタバレなし】${review.title}（${review.year}）怖さレビュー｜ビビリ映画部`} description={`${review.title}のびっくり度・グロ度・動物安否を正直レビュー。ビビリでも観られる？怖さの性質・攻略ガイド付き。`}>
 
@@ -171,6 +195,35 @@ const levelClass = { high: 'level-high', mid: 'level-mid', low: 'level-low' };
       <tr><th>上映時間</th><td>{review.meta.runtime}分</td></tr>
     </table>
   </div>
+
+  {relatedReviews.length > 0 && (
+    <div class="section-block">
+      <h2 class="section-heading">🎬 似たジャンルの作品</h2>
+      <div style="display:flex; gap:16px; overflow-x:auto; padding-bottom:8px;">
+        {relatedReviews.map(r => (
+          <a href={`${base}/reviews/${r.id}/`} class="review-card-link" style="min-width:300px; flex:1; max-width:none;">
+            <article class="review-card">
+              <div class="card-img"><img src={r.image} alt={r.title}></div>
+              <div class="card-info">
+                <div class="card-title-row"><span class="card-title">{r.title}</span><span class="card-year">{r.year}</span></div>
+                <div class="card-labels">
+                  <span class={`label ${difficultyClass[r.difficulty]}`}>{difficultyLabel[r.difficulty]}</span>
+                  {r.genres.map(g => <span class="label label-genre">{g}</span>)}
+                </div>
+                <div class="card-eval">
+                  <div class="eval-stars-pair">
+                    <div class="eval-bikkuri"><span class="eval-key">😱 びっくり度</span><div class="stars" set:html={stars(r.bikkuri)}></div></div>
+                    <div class="eval-bikkuri"><span class="eval-key">🩸 グロ度</span><div class="stars" set:html={stars(r.guro)}></div></div>
+                  </div>
+                  <div class="animal-row"><span class="eval-key">🐾 動物の安否</span><span class={`animal-badge ${animalClass[r.animal]}`}>{animalLabelMap[r.animal]}</span></div>
+                </div>
+              </div>
+            </article>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="related-section">
     <a class="list-btn" href={`${base}/reviews/`}>← レビュー一覧を見る</a>

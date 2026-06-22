@@ -405,4 +405,18 @@ export const reviews = [
     publishedAt: '2026-06-16',
     updatedAt: '2026-06-16',
   },
+  {
+    id: 'dream-scenario',
+    title: 'ドリーム・シナリオ',
+    titleEn: 'Dream Scenario',
+    year: 2024,
+    genres: ['サイコ', 'ホラーコメディ'],
+    difficulty: 'mid',
+    animal: 'warn',
+    bikkuri: 3,
+    guro: 3,
+    image: '/bibiri-movie-club/assets/images/dream-scenario.webp',
+    publishedAt: '2026-06-20',
+    updatedAt: '2026-06-20',
+  },
 ];
