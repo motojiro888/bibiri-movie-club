@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { articles } from '../../data/articles.js';
+import { reviews } from '../../data/reviews/index.js';
+
+export function getStaticPaths() {
+  return articles.map(a => ({ params: { id: a.id }, props: { article: a } }));
+}
+
+const { article } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const films = article.filmIds.map(id => ({
+  review: reviews.find(r => r.id === id),
+  comment: article.filmComments.find(c => c.id === id)?.comment,
+}));
+
+function stars(count, max = 5) {
+  return Array.from({length: max}, (_, i) =>
+    `<span class="star ${i < count ? 'on' : 'off'}">★</span>`
+  ).join('');
+}
+
+const animalLabel = { safe: '✅ 安全', warn: '⚠️ 注意', danger: '❌ 危険' };
+const difficultyLabel = { beginner: '✓ 初心者向け', mid: '🟡 中級', advanced: '🔴 上級' };
+---
+<BaseLayout title={`${article.title}｜ビビリ映画部`} description={article.intro}>
+
+<nav class="breadcrumb" aria-label="パンくず">
+  <a href={`${base}/`}>ホーム</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href={`${base}/articles/`}>まとめ記事一覧</a>
+  <span class="breadcrumb-sep">›</span>
+  <span>{article.title}</span>
+</nav>
+
+<div class="article-wrap">
+
+  <p style="font-size:0.75rem; color:var(--text-light); text-align:right; margin-bottom:8px;">更新日：{article.updatedAt}</p>
+
+  <h1 class="movie-main-title">{article.title}</h1>
+
+  <div style="display:flex; gap:8px; margin:16px 0; border-radius:var(--radius); overflow:hidden;">
+    {films.map(f => (
+      <div style="flex:1; aspect-ratio:1/1; overflow:hidden;">
+        <img src={`${base}/${f.review.image}`} alt={`${f.review.title}（${f.review.year}）`} style="width:100%; height:100%; object-fit:cover; display:block;">
+      </div>
+    ))}
+  </div>
+
+  {article.intro.split('\n\n').map(paragraph => (
+    <p class="article-lead" style="margin-bottom:12px;">
+      {paragraph.split('\n').map((line, i, arr) => (
+        i < arr.length - 1 ? <>{line}<br /></> : line
+      ))}
+    </p>
+  ))}
+
+  <nav class="toc-block" aria-label="目次">
+    <div class="toc-title">📋 目次</div>
+    <ol class="toc-list">
+      {films.map((f, i) => (
+        <li><a href={`#film-${f.review.id}`}><span class="toc-num">{i + 1}</span>{f.review.title}（{f.review.year}）</a></li>
+      ))}
+      <li><a href="#section-compare"><span class="toc-num">{films.length + 1}</span>{films.length}作品を並べて比較</a></li>
+      <li><a href="#section-recommend"><span class="toc-num">{films.length + 2}</span>結局どれから観ればいい？</a></li>
+      <li><a href="#section-motojiro"><span class="toc-num">{films.length + 3}</span>モトジロウの総評</a></li>
+    </ol>
+  </nav>
+
+  {films.map(f => (
+    <div class="section-block" id={`film-${f.review.id}`}>
+      <h2 class="section-heading">{f.review.title}（{f.review.year}）</h2>
+      <p class="article-lead">{f.comment}</p>
+      <a href={`${base}/reviews/${f.review.id}`} class="review-card-link" style="width:100%;">
+        <div class="review-card" style="flex-direction:column; align-items:stretch;">
+          <div style="display:flex; gap:12px; align-items:center; padding:12px;">
+            <div class="card-img" style="flex-shrink:0; margin:0;">
+              <img src={`${base}/${f.review.image}`} alt={`${f.review.title}（${f.review.year}）`}>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+              <div class="seo-row">
+                <span class="seo-label">😱 びっくり度</span>
+                <div class="stars-row" set:html={stars(f.review.bikkuri)}></div>
+              </div>
+              <div class="seo-row">
+                <span class="seo-label">🩸 グロ度</span>
+                <div class="stars-row" set:html={stars(f.review.guro)}></div>
+              </div>
+              <div class="seo-row">
+                <span class="seo-label">🐾 動物の安否</span>
+                <span class={`animal-badge animal-badge-${f.review.animal}`}>{animalLabel[f.review.animal]}</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:0 12px 12px;">
+            <span class="list-btn" style="pointer-events:none;">詳しいレビューを読む →</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  ))}
+
+  <div class="section-block">
+    <h2 class="section-heading" id="section-compare">📊 {films.length}作品を並べて比較</h2>
+    <table class="work-info-table" style="border-collapse:collapse;">
+      <tr>
+        <th></th>
+        {films.map((f, i) => <th style={i > 0 ? 'border-left:2px solid var(--border);' : ''}>{f.review.title}</th>)}
+      </tr>
+      <tr>
+        <th>😱 びっくり度</th>
+        {films.map((f, i) => <td style={i > 0 ? 'border-left:2px solid var(--border);' : ''} set:html={stars(f.review.bikkuri)}></td>)}
+      </tr>
+      <tr>
+        <th>🩸 グロ度</th>
+        {films.map((f, i) => <td style={i > 0 ? 'border-left:2px solid var(--border);' : ''} set:html={stars(f.review.guro)}></td>)}
+      </tr>
+      <tr>
+        <th>🧠 精神ダメージ</th>
+        {films.map((f, i) => <td style={i > 0 ? 'border-left:2px solid var(--border);' : ''} set:html={stars(f.review.fearCards.find(c => c.title === '精神ダメージ')?.score ?? 0)}></td>)}
+      </tr>
+      <tr>
+        <th>🌃 日常侵食度</th>
+        {films.map((f, i) => <td style={i > 0 ? 'border-left:2px solid var(--border);' : ''} set:html={stars(f.review.fearCards.find(c => c.title === '日常侵食度')?.score ?? 0)}></td>)}
+      </tr>
+      <tr>
+        <th>🐾 動物の安否</th>
+        {films.map((f, i) => (
+          <td style={i > 0 ? 'border-left:2px solid var(--border);' : ''}><span class={`animal-badge animal-badge-${f.review.animal}`}>{animalLabel[f.review.animal]}</span></td>
+        ))}
+      </tr>
+      <tr>
+        <th>🎯 難易度</th>
+        {films.map((f, i) => <td style={i > 0 ? 'border-left:2px solid var(--border);' : ''}>{difficultyLabel[f.review.difficulty]}</td>)}
+      </tr>
+    </table>
+  </div>
+
+  <div class="section-block">
+    <h2 class="section-heading" id="section-recommend">🎯 結局どれから観ればいい？</h2>
+    {article.recommendations.map(rec => {
+      const film = reviews.find(r => r.id === rec.filmId);
+      return (
+        <div class="timestamp-item" style="flex-direction:column; gap:4px;">
+          <span class="timestamp-time">{rec.label}</span>
+          <span class="timestamp-text">『{film.title}』{rec.reason}</span>
+        </div>
+      );
+    })}
+  </div>
+
+  <div class="section-block">
+    <h2 class="section-heading" id="section-motojiro">モトジロウの総評</h2>
+    <div class="motojiro-casual">
+      <img src={`${base}/${article.motojiroImg}`} alt={article.motojiroAlt} class="motojiro-img motojiro-review">
+      <div class="casual-bubble">{article.motojiroComment}</div>
+    </div>
+  </div>
+
+  <div class="related-section">
+    <a class="list-btn" href={`${base}/articles/`}>← まとめ記事一覧へ戻る</a>
+    <a class="back-to-top" href="#" id="backToTop">↑ ページトップへ戻る</a>
+  </div>
+
+</div>
+
+<script>
+  document.getElementById('backToTop').addEventListener('click', e => {
+    e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { articles } from '../../data/articles.js';
+import { reviews } from '../../data/reviews/index.js';
+
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="まとめ記事一覧｜ビビリ映画部" description="ビビリ映画部のまとめ記事一覧。監督別・テーマ別に複数作品を比較レビュー。">
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>まとめ記事一覧</h1>
+    <p>監督別・テーマ別に、複数作品をまとめて比較レビュー</p>
+  </div>
+</div>
+
+<main>
+  <div class="cards-grid">
+    {articles.map(article => {
+      const filmData = article.filmIds.map(id => reviews.find(r => r.id === id)).filter(Boolean);
+      return (
+        <a href={`${base}/articles/${article.id}/`} class="review-card-link">
+          <article class="review-card" style="flex-direction:column; align-items:stretch;">
+            <div style="display:flex; gap:4px; overflow:hidden; border-radius:var(--radius) var(--radius) 0 0;">
+              {filmData.map(f => (
+                <div style="flex:1; aspect-ratio:1/1; overflow:hidden;">
+                  <img src={`${base}/${f.image}`} alt={f.title} style="width:100%; height:100%; object-fit:cover; display:block;">
+                </div>
+              ))}
+            </div>
+            <div class="card-info">
+              <div class="card-title-row">
+                <span class="card-title">{article.title}</span>
+              </div>
+              <div class="card-labels">
+                {filmData.map(f => <span class="label label-genre">{f.title}</span>)}
+              </div>
+              <p style="font-size:0.78rem; color:var(--text-mid); line-height:1.6; margin:4px 0 0;">
+                {article.intro.split('\n')[0].substring(0, 80)}…
+              </p>
+            </div>
+          </article>
+        </a>
+      );
+    })}
+  </div>
+
+  <div style="margin-top:32px;">
+    <a class="list-btn" href={`${base}/`}>← トップへ戻る</a>
+  </div>
+</main>
+
+</BaseLayout>
