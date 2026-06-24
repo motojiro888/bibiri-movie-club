@@ -745,6 +745,7 @@ footer p {
 
 /* ===== TIMESTAMP GUIDE ===== */
 .timestamp-list { display: flex; flex-direction: column; gap: 8px; }
+.timestamp-empty { padding: 20px; background: var(--card); border: 1.5px dashed var(--border); border-radius: 10px; text-align: center; color: var(--text-light); font-size: 0.92rem; }
 .timestamp-item {
   display: flex; gap: 12px; align-items: flex-start;
   padding: 10px 12px;
