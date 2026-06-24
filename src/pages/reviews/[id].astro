@@ -147,15 +147,21 @@ const animalClass = { safe: 'animal-badge-safe', warn: 'animal-badge-warn', dang
   <div class="section-block" id="section-guide">
     <h2 class="section-heading">🛡️ ビビリ攻略ガイド</h2>
     <p class="article-lead">これを知っておけば少し楽に観られます。危険ポイントをご案内。</p>
-    <div class="timestamp-list">
-      {review.timestamps.map(ts => (
-        <div class="timestamp-item">
-          <span class="timestamp-time">{ts.time}</span>
-          <span class="timestamp-text">{ts.text}</span>
-          <span class={`timestamp-level ${levelClass[ts.level]}`}>{ts.level === 'high' ? '要注意' : ts.level === 'mid' ? '注意' : '低'}</span>
-        </div>
-      ))}
-    </div>
+    {review.timestamps.length > 0 ? (
+      <div class="timestamp-list">
+        {review.timestamps.map(ts => (
+          <div class="timestamp-item">
+            <span class="timestamp-time">{ts.time}</span>
+            <span class="timestamp-text">{ts.text}</span>
+            <span class={`timestamp-level ${levelClass[ts.level]}`}>{ts.level === 'high' ? '要注意' : ts.level === 'mid' ? '注意' : '低'}</span>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="timestamp-empty">
+        <p>🚧 この作品のタイムスタンプは準備中です。更新をお待ちください。</p>
+      </div>
+    )}
   </div>
 
   <div class="section-block">
