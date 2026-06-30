@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://motojiro888.github.io/bibiri-movie-club/sitemap-index.xml
