@@ -766,6 +766,10 @@ footer p {
 .level-high { background: var(--danger-bg); color: var(--danger); }
 .level-mid  { background: var(--warn-bg);   color: var(--warn); }
 .level-low  { background: var(--safe-bg);   color: var(--safe); }
+.timestamp-none { padding: 16px 20px; background: var(--safe-bg); border: 1.5px solid var(--safe); border-radius: 10px; color: var(--safe); font-size: 0.88rem; font-weight: 600; text-align: center; }
+.timestamp-none p { margin: 0; }
+.timestamp-pattern { background: var(--warn-bg); border-color: var(--warn); }
+.timestamp-pattern-label { font-size: 0.72rem; font-weight: 700; color: var(--warn); min-width: 46px; padding-top: 2px; flex-shrink: 0; white-space: nowrap; }
 
 /* ===== MOTOJIRO CASUAL ===== */
 .motojiro-casual {

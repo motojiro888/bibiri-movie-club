@@ -1,6 +1,6 @@
 export const scream = {
   id: 'scream',
-  title: 'スクリーム',
+  title: 'スクリーム（1996）',
   titleEn: 'Scream',
   year: 1996,
   genres: ['サイコ', 'ミステリー'],
@@ -10,7 +10,7 @@ export const scream = {
   animalDesc: '動物が酷い目に遭うシーンはありません。安心して観られます。',
   bikkuri: 3,
   guro: 2,
-  image: '/assets/images/scream.webp',
+  image: '/assets/images/scream-1996.webp',
   motojiroImg: '/assets/images/motojiro-excited.png',
   motojiroAlt: '興奮しているモトジロウ',
   publishedAt: '2026-06-10',

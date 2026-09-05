@@ -31,5 +31,6 @@ import { dreamScenario } from './dream-scenario.js';
 import { theEvilDead } from './the-evil-dead.js';
 import { funnyGames } from './funny-games.js';
 import { pinkFlamingos } from './pink-flamingos.js';
+import { scream5 } from './scream5.js';
 
-export const reviews = [hereditary, midsommar, beauIsAfraid, getOut, talkToMe, theKillingOfASacredDeer, lamb, us, esther, suspiria, munasawagi, speaknoevil, theInnocents, together, scream, scaryMovie, substance, sickOfMyself, scream2, devilsBath, antichrist, inlandEmpire, softAndQuiet, girlWithNeedle, mother, frewaka, m3gan, scream3, nope, dreamScenario, theEvilDead, funnyGames, pinkFlamingos];
+export const reviews = [hereditary, midsommar, beauIsAfraid, getOut, talkToMe, theKillingOfASacredDeer, lamb, us, esther, suspiria, munasawagi, speaknoevil, theInnocents, together, scream, scaryMovie, substance, sickOfMyself, scream2, devilsBath, antichrist, inlandEmpire, softAndQuiet, girlWithNeedle, mother, frewaka, m3gan, scream3, nope, dreamScenario, theEvilDead, funnyGames, pinkFlamingos, scream5];

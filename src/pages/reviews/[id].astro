@@ -35,12 +35,15 @@ const relatedReviews = reviewsSummary
   })
   .slice(0, 4);
 
+const difficultyDesc = { beginner: 'ホラー初心者にもおすすめ', mid: 'ホラー中級者向け', advanced: 'ホラー上級者向けの一本' };
+const seoDescription = `${review.title}（${review.year}）は怖い？びっくり度★${review.bikkuri}・グロ度★${review.guro}の${review.meta.genre}作品。${difficultyDesc[review.difficulty]}。ネタバレなしで怖さの正体と心構えを解説。`;
+
 const difficultyLabel = { beginner: '✓ 初心者向け', mid: '🟡 中級', advanced: '🔴 上級' };
 const difficultyClass = { beginner: 'label-beginner', mid: 'label-mid', advanced: 'label-advanced' };
 const animalLabelMap = { safe: '✅ 安全', warn: '⚠️ 注意', danger: '❌ 危険' };
 const animalClass = { safe: 'animal-badge-safe', warn: 'animal-badge-warn', danger: 'animal-badge-danger' };
 ---
-<BaseLayout title={`【ネタバレなし】${review.title}（${review.year}）怖さレビュー｜ビビリ映画部`} description={`${review.title}のびっくり度・グロ度・動物安否を正直レビュー。ビビリでも観られる？怖さの性質・攻略ガイド付き。`}>
+<BaseLayout title={`【ネタバレなし】${review.title}（${review.year}）怖さレビュー｜ビビリ映画部`} description={seoDescription}>
 
 <nav class="breadcrumb" aria-label="パンくず">
   <a href={`${base}/`}>ホーム</a>
@@ -150,11 +153,22 @@ const animalClass = { safe: 'animal-badge-safe', warn: 'animal-badge-warn', dang
     {review.timestamps.length > 0 ? (
       <div class="timestamp-list">
         {review.timestamps.map(ts => (
-          <div class="timestamp-item">
-            <span class="timestamp-time">{ts.time}</span>
-            <span class="timestamp-text">{ts.text}</span>
-            <span class={`timestamp-level ${levelClass[ts.level]}`}>{ts.level === 'high' ? '要注意' : ts.level === 'mid' ? '注意' : '低'}</span>
-          </div>
+          ts.type === 'none' ? (
+            <div class="timestamp-none">
+              <p>✅ びっくり演出はほとんどない作品です</p>
+            </div>
+          ) : ts.type === 'pattern' ? (
+            <div class="timestamp-item timestamp-pattern">
+              <span class="timestamp-pattern-label">⚠️ パターン</span>
+              <span class="timestamp-text">{ts.text}</span>
+            </div>
+          ) : (
+            <div class="timestamp-item">
+              <span class="timestamp-time">{ts.time}</span>
+              <span class="timestamp-text">{ts.text}</span>
+              <span class={`timestamp-level ${levelClass[ts.level]}`}>{ts.level === 'high' ? '要注意' : ts.level === 'mid' ? '注意' : '低'}</span>
+            </div>
+          )
         ))}
       </div>
     ) : (
