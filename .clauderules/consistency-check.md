@@ -1,48 +1,82 @@
+# 整合性チェックルール
+
+適用タイミング：新規レビュー追加時・既存レビュー修正時（どちらも必須）
+
 ---
-paths:
-  - "src/data/reviews/**/*.js"
-  - "src/data/reviews.js"
-  - "reviews-list.csv"
+
+## STEP 1｜ファイル間の数値同期チェック（自動修正可）
+
+対象ファイル：`[id].js` → `index.js` → `reviews.js`
+
+| チェック項目 | [id].js の参照先 | reviews.js の対応フィールド |
+|---|---|---|
+| bikkuri | `bikkuri` | `bikkuri` |
+| guro | `guro` | `guro` |
+| difficulty | `difficulty` | `difficulty` |
+| animal | `animal` | `animal` |
+| genres | `genres` | `genres` |
+| publishedAt | `publishedAt` | `publishedAt` |
+| updatedAt | `updatedAt` | `updatedAt` |
+| image パス | `/assets/images/[id].webp` | `/bibiri-movie-club/assets/images/[id].webp` |
+
+**自動修正ルール**
+- 数値の不一致（bikkuri・guro）→ `[id].js` を正として `reviews.js` を上書き
+- image パスのプレフィックス差異（`/bibiri-movie-club/` の有無）は仕様。修正しない
+
 ---
 
-# レビュー整合性チェック
+## STEP 2｜フィールド存在チェック（自動検出・人間判断）
 
-レビューの新規追加・修正のたびに行う整合性チェックの仕様。評価基準そのものはプロジェクトルートの `評価基準表.md` を参照すること。
+`[id].js` に以下がすべて存在するか確認する。欠落があれば人間に報告して止まる。
 
-## 動物安全の判定方針
+必須フィールド一覧：
+- `id` / `title` / `titleEn` / `year`
+- `genres`（配列）/ `difficulty` / `animal`
+- `animalLabel` / `animalDesc`
+- `bikkuri` / `guro`
+- `image` / `motojiroImg` / `motojiroAlt`
+- `publishedAt` / `updatedAt`
+- `synopsis` / `meta` / `verdict`
+- `fearCards`（4件）/ `timestamps`（1件以上）
+- `motojiroComment` / `fitOk` / `fitNg`
 
-- 動物の種類（ペットか野生動物かなど）は `safe`/`warn`/`danger` の判定に影響させない
-- 判定基準は「画面内で明確に死/負傷が描写されるか」のみ
-  - `danger`：画面内で明確に死亡・負傷が描写される
-  - `warn`：危険な状況や死体は出るが、死/負傷の瞬間は直接描写されない
-  - `safe`：動物が登場しない、または登場しても危害が及ばない
-- どの動物が登場するかは `animalDesc` の文章側で伝える（判定段階そのものには使わない）
+---
 
-## データ同期が必要な4箇所
+## STEP 3｜値の形式チェック（自動検出・人間判断）
 
-レビュー1本につき、以下4箇所のスコア・属性が一致している必要がある。
+以下の形式違反を検出したら人間に報告して止まる。
 
-| 箇所 | 内容 |
-|---|---|
-| `reviews/[id].js` トップレベル | `bikkuri` / `guro` |
-| `reviews/[id].js` の `fearCards[].score` | びっくり度・グロ度・精神ダメージ・日常侵食度の4項目 |
-| `reviews.js`（フラット配列） | `bikkuri` / `guro` / `animal` |
-| `reviews-list.csv` | びっくり度・グロ度・精神ダメージ・日常侵食度・動物安否 |
+- `difficulty` が `beginner` / `mid` / `advanced` 以外
+- `animal` が `safe` / `warn` / `danger` 以外
+- `animalLabel` が `animal` 値と不一致
+  - safe → `✅ 安全`
+  - warn → `⚠️ 注意`
+  - danger → `❌ 危険`
+- `bikkuri` / `guro` が 1〜5 の整数以外
+- `fearCards` の件数が 4 件以外
+- `fearCards[*].score` が 1〜5 の整数以外
+- `timestamps[*].level` が `high` / `mid` / `low` 以外
+- `publishedAt` / `updatedAt` が `YYYY-MM-DD` 形式以外
+- `image` が `/assets/images/[id].webp` 形式以外
 
-## チェック手順
+---
 
-1. 対象レビューの `reviews/[id].js` を読む
-2. `評価基準表.md` と照らし合わせ、`fearCards[].body` の本文が `score` の水準と一致しているか確認する
-3. 動物安全（`animal` / `animalLabel` / `animalDesc`）が判定方針と矛盾していないか確認する
-4. `reviews.js` の該当エントリと `bikkuri` / `guro` / `animal` が一致しているか確認する
-5. `reviews-list.csv` の該当行と びっくり度/グロ度/精神ダメージ/日常侵食度/動物安否 が一致しているか確認する
-6. 複数レビューを横断して、同じスコアでも体感のズレがないか（相対評価）を確認する
+## STEP 4｜人間レビュー必須項目（自動化しない）
 
-## 自動修正してよいもの / 人間判断が必要なもの
+Claude Code はここまでで止まり、以下を人間に確認を促すメッセージを出す。
 
-| 種別 | 対応 |
-|---|---|
-| 4箇所間の数値の食い違い（機械的なズレ） | 自動修正してよい。`reviews/[id].js` を正とする |
-| スコアと本文の整合性（基準表との乖離） | 自動修正せず、不一致点をレポートして人間に確認を求める |
-| 動物安全の判定（画面描写の有無の事実確認） | 自動修正せず、レポートして人間に確認を求める |
-| 複数レビュー間の相対評価のズレ | 自動修正せず、レポートして人間に確認を求める |
+```
+以下の項目は人間による確認が必要です（consistency-check-manual.md を参照）：
+- [ ] スコアと本文の整合性
+- [ ] 動物安否の判定
+- [ ] 他レビューとの相対スコアバランス
+```
+
+---
+
+## 完了条件
+
+STEP 1〜3 が通過したあと、以下を必ず更新する：
+
+- `reviews-list.csv`（public 列は手動のため空欄のまま）
+- `サイト改善ログ.md`（magnitude: 小、target: Claude Code）

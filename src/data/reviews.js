@@ -489,4 +489,18 @@ export const reviews = [
     publishedAt: '2026-09-05',
     updatedAt: '2026-09-05',
   },
+  {
+    id: 'martyrs',
+    title: 'マーターズ',
+    titleEn: 'Martyrs',
+    year: 2008,
+    genres: ['サイコ', '胸糞'],
+    difficulty: 'advanced',
+    animal: 'safe',
+    bikkuri: 3,
+    guro: 5,
+    image: '/bibiri-movie-club/assets/images/martyrs.webp',
+    publishedAt: '2026-09-05',
+    updatedAt: '2026-09-05',
+  },
 ];

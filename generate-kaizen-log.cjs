@@ -221,6 +221,25 @@ const logs = [
       '破線ボーダーのスタイル（.timestamp-empty）を追加し、準備中であることが視覚的にわかるようにした',
     ],
   },
+  {
+    date: '2026/06/24',
+    title: 'SEO対策：titleタグ・meta description の改善',
+    size: '中',
+    tool: 'Claude Code',
+    what: 'titleタグの区切り文字統一、トップページタイトルへの「ホラー映画」キーワード追加、レビュー一覧ページへのmeta description追加、各レビュー記事のmeta descriptionをレビューデータから動的生成に変更。',
+    why: [
+      'meta descriptionが全レビュー記事で同一テンプレートだったため、Googleに低品質と判断されやすかった',
+      'トップページのtitleに「ホラー映画」が含まれず、主要な検索キーワードで引っかかりにくかった',
+      'レビュー一覧ページにmeta descriptionがなく、検索結果の説明文がGoogleの自動抜粋任せだった',
+      '区切り文字が半角と全角で不統一だった',
+    ],
+    result: [
+      '各レビューのmeta descriptionがタイトル・年・スコア・ジャンル・難易度から自動生成され、全記事でユニークに',
+      'トップページのtitleを「ビビリ映画部｜ホラー映画の怖さレビュー＆攻略ガイド」に変更',
+      'レビュー一覧ページにmeta descriptionを追加',
+      '全ページの区切り文字を全角「｜」に統一',
+    ],
+  },
 ];
 
 async function main() {
