@@ -240,6 +240,21 @@ const logs = [
       '全ページの区切り文字を全角「｜」に統一',
     ],
   },
+  {
+    date: '2026/09/06',
+    title: 'トップページにmeta descriptionを追加（掲載作品数を動的反映）',
+    size: '小',
+    tool: 'Claude Code',
+    what: 'トップページ（index.astro）にmeta descriptionタグを追加。掲載作品数（全○作品）はreviews.lengthから動的に生成する形にした。',
+    why: [
+      'トップページにmeta descriptionタグ自体が設定されておらず、Googleの検索結果スニペットが本文からの自動抜粋任せになっていた',
+      'その結果、Google側のキャッシュ更新タイミングによっては検索結果の「全○作品」表記が古いまま表示され続ける状態だった',
+    ],
+    result: [
+      'トップページにも他ページ同様のmeta descriptionタグが設定され、掲載作品数が常に最新のreviews.lengthを参照するように',
+      '検索結果スニペットの反映自体はGoogleの再クロール・キャッシュ更新のタイミング次第のため、即時反映を保証するものではない',
+    ],
+  },
 ];
 
 async function main() {
