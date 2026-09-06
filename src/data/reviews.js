@@ -503,4 +503,18 @@ export const reviews = [
     publishedAt: '2026-09-05',
     updatedAt: '2026-09-05',
   },
+  {
+    id: 'scream6',
+    title: 'スクリーム6',
+    titleEn: 'Scream VI',
+    year: 2023,
+    genres: ['スリラー', '人怖'],
+    difficulty: 'mid',
+    animal: 'safe',
+    bikkuri: 3,
+    guro: 3,
+    image: '/bibiri-movie-club/assets/images/scream6.webp',
+    publishedAt: '2026-06-17',
+    updatedAt: '2026-06-17',
+  },
 ];
