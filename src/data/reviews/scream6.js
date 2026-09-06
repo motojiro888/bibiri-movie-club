@@ -13,8 +13,8 @@ export const scream6 = {
   image: '/assets/images/scream6.webp',
   motojiroImg: '/assets/images/motojiro-excited.png',
   motojiroAlt: '興奮しているモトジロウ',
-  publishedAt: '2026-06-17',
-  updatedAt: '2026-06-17',
+  publishedAt: '2026-09-06',
+  updatedAt: '2026-09-06',
   synopsis: 'ウッドズボロでの事件から1年後、生き残った4人はニューヨークで新生活を始めていた。しかし過去から逃れられるはずもなく、ゴーストフェイスが再び彼女たちの前に現れる。今度は顔見知りではない、見知らぬ人々でごった返す大都会が舞台になる。',
   meta: {
     runtime: 122,

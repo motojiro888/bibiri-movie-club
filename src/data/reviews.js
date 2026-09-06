@@ -514,7 +514,7 @@ export const reviews = [
     bikkuri: 3,
     guro: 3,
     image: '/bibiri-movie-club/assets/images/scream6.webp',
-    publishedAt: '2026-06-17',
-    updatedAt: '2026-06-17',
+    publishedAt: '2026-09-06',
+    updatedAt: '2026-09-06',
   },
 ];
