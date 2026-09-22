@@ -531,4 +531,18 @@ export const reviews = [
     publishedAt: '2026-09-07',
     updatedAt: '2026-09-07',
   },
+  {
+    id: 'human-centipede',
+    title: 'ムカデ人間',
+    titleEn: 'The Human Centipede (First Sequence)',
+    year: 2009,
+    genres: ['胸糞', 'サイコ'],
+    difficulty: 'advanced',
+    animal: 'safe',
+    bikkuri: 1,
+    guro: 2,
+    image: '/bibiri-movie-club/assets/images/human-centipede.webp',
+    publishedAt: '2026-09-07',
+    updatedAt: '2026-09-07',
+  },
 ];
