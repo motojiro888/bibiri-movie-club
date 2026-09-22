@@ -517,4 +517,18 @@ export const reviews = [
     publishedAt: '2026-09-06',
     updatedAt: '2026-09-06',
   },
+  {
+    id: 'scream7',
+    title: 'スクリーム7',
+    titleEn: 'Scream 7',
+    year: 2026,
+    genres: ['サイコ', 'ミステリー'],
+    difficulty: 'mid',
+    animal: 'safe',
+    bikkuri: 3,
+    guro: 3,
+    image: '/bibiri-movie-club/assets/images/scream7.webp',
+    publishedAt: '2026-09-07',
+    updatedAt: '2026-09-07',
+  },
 ];
