@@ -573,4 +573,18 @@ export const reviews = [
     publishedAt: '2026-09-22',
     updatedAt: '2026-09-22',
   },
+  {
+    id: 'inside',
+    title: '屋敷女',
+    titleEn: 'Inside',
+    year: 2007,
+    genres: ['スリラー', 'スプラッター'],
+    difficulty: 'advanced',
+    animal: 'danger',
+    bikkuri: 3,
+    guro: 5,
+    image: '/bibiri-movie-club/assets/images/inside.webp',
+    publishedAt: '2026-09-22',
+    updatedAt: '2026-09-22',
+  },
 ];
