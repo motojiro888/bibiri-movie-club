@@ -559,4 +559,18 @@ export const reviews = [
     publishedAt: '2026-09-07',
     updatedAt: '2026-09-07',
   },
+  {
+    id: 'human-centipede-3',
+    title: 'ムカデ人間3',
+    titleEn: 'The Human Centipede 3 (Final Sequence)',
+    year: 2015,
+    genres: ['ホラーコメディ', 'ゴア'],
+    difficulty: 'advanced',
+    animal: 'safe',
+    bikkuri: 1,
+    guro: 4,
+    image: '/bibiri-movie-club/assets/images/human-centipede-3.webp',
+    publishedAt: '2026-09-22',
+    updatedAt: '2026-09-22',
+  },
 ];
