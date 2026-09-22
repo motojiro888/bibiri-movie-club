@@ -545,4 +545,18 @@ export const reviews = [
     publishedAt: '2026-09-07',
     updatedAt: '2026-09-07',
   },
+  {
+    id: 'human-centipede-2',
+    title: 'ムカデ人間2',
+    titleEn: 'The Human Centipede II (Full Sequence)',
+    year: 2011,
+    genres: ['スプラッター', '胸糞'],
+    difficulty: 'advanced',
+    animal: 'safe',
+    bikkuri: 1,
+    guro: 5,
+    image: '/bibiri-movie-club/assets/images/human-centipede-2.webp',
+    publishedAt: '2026-09-07',
+    updatedAt: '2026-09-07',
+  },
 ];

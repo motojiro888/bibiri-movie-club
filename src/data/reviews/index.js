@@ -37,5 +37,6 @@ import { martyrs } from './martyrs.js';
 import { scream6 } from './scream6.js';
 import { scream7 } from './scream7.js';
 import { humanCentipede } from './human-centipede.js';
+import { humanCentipede2 } from './human-centipede-2.js';
 
-export const reviews = [hereditary, midsommar, beauIsAfraid, getOut, talkToMe, theKillingOfASacredDeer, lamb, us, esther, suspiria, munasawagi, speaknoevil, theInnocents, together, scream, scaryMovie, substance, sickOfMyself, scream2, devilsBath, antichrist, inlandEmpire, softAndQuiet, girlWithNeedle, mother, frewaka, m3gan, scream3, nope, dreamScenario, theEvilDead, funnyGames, pinkFlamingos, scream5, scream4, martyrs, scream6, scream7, humanCentipede];
+export const reviews = [hereditary, midsommar, beauIsAfraid, getOut, talkToMe, theKillingOfASacredDeer, lamb, us, esther, suspiria, munasawagi, speaknoevil, theInnocents, together, scream, scaryMovie, substance, sickOfMyself, scream2, devilsBath, antichrist, inlandEmpire, softAndQuiet, girlWithNeedle, mother, frewaka, m3gan, scream3, nope, dreamScenario, theEvilDead, funnyGames, pinkFlamingos, scream5, scream4, martyrs, scream6, scream7, humanCentipede, humanCentipede2];
