@@ -1,0 +1,416 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { reviews } from '../../data/reviews/index.js';
+
+const base = import.meta.env.BASE_URL;
+
+// 診断に必要な項目だけを抜き出した軽量データ（synopsis・timestamps等の本文は含めない）
+const movies = reviews.map(r => ({
+  id: r.id,
+  title: r.title,
+  year: r.year,
+  image: r.image,
+  animal: r.animal,
+  bikkuri: r.bikkuri,
+  guro: r.guro,
+  shinteki: r.fearCards.find(c => c.title === '精神ダメージ')?.score ?? r.bikkuri,
+  shinshoku: r.fearCards.find(c => c.title === '日常侵食度')?.score ?? r.bikkuri,
+}));
+---
+
+<BaseLayout title="ホラー映画診断｜ビビリ映画部" description="5つの質問に答えるだけで、今のあなたの耐性にちょうどいいホラー映画を診断。おすすめ＋ちょっと背伸びできる1本もご紹介します。">
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>ホラー映画診断</h1>
+    <p>5つの質問に答えて、今のあなたにちょうどいい一本を見つけよう</p>
+  </div>
+</div>
+
+<main class="diag-main">
+
+  <!-- イントロ -->
+  <div class="diag-intro" id="diagIntro">
+    <img src={`${base}/assets/images/motojiro-excited.png`} alt="やる気のモトジロウ" class="motojiro-img diag-intro-img">
+    <p class="diag-intro-text">「びっくり度」「グロ度」「精神ダメージ」「日常侵食度」の4軸と、動物の安否への耐性を聞いて、全{movies.length}作品からあなたにぴったりの一本＋ちょっと背伸びできる一本を診断します。</p>
+    <button class="diag-start-btn" id="startBtn">診断をはじめる →</button>
+  </div>
+
+  <!-- クイズ -->
+  <div class="diag-quiz" id="diagQuiz" hidden>
+    <div class="diag-progress"><div class="diag-progress-bar" id="progressBar"></div></div>
+    <div class="diag-step-label" id="stepLabel">Q1 / 5</div>
+
+    <div class="diag-question" data-axis="bikkuri">
+      <h2 class="diag-q-title">😱 不意打ちの「びっくり」演出への耐性は？</h2>
+      <div class="diag-choices">
+        <button class="diag-choice" data-value="2">不意打ちに弱い…心臓に悪い</button>
+        <button class="diag-choice" data-value="4">身構えていれば大丈夫</button>
+        <button class="diag-choice" data-value="5">全然平気、むしろ好き</button>
+      </div>
+    </div>
+
+    <div class="diag-question" data-axis="guro" hidden>
+      <h2 class="diag-q-title">🩸 血や身体的な描写への耐性は？</h2>
+      <div class="diag-choices">
+        <button class="diag-choice" data-value="2">直視できない、想像するだけでしんどい</button>
+        <button class="diag-choice" data-value="4">多少の描写なら大丈夫</button>
+        <button class="diag-choice" data-value="5">グロ耐性はかなりある</button>
+      </div>
+    </div>
+
+    <div class="diag-question" data-axis="shinteki" hidden>
+      <h2 class="diag-q-title">🧠 観ている間ずっと続く「嫌な緊張感」は平気？</h2>
+      <div class="diag-choices">
+        <button class="diag-choice" data-value="2">気が重くなって耐えられなそう</button>
+        <button class="diag-choice" data-value="4">ある程度の重さなら受け止められる</button>
+        <button class="diag-choice" data-value="5">精神的に追い込まれる系も平気</button>
+      </div>
+    </div>
+
+    <div class="diag-question" data-axis="shinshoku" hidden>
+      <h2 class="diag-q-title">🌃 観終わった後もじわじわ怖さが残るタイプは平気？</h2>
+      <div class="diag-choices">
+        <button class="diag-choice" data-value="2">観た後まで怖いのはできるだけ避けたい</button>
+        <button class="diag-choice" data-value="4">多少は仕方ない、受け入れられる</button>
+        <button class="diag-choice" data-value="5">後を引く系、むしろ好き</button>
+      </div>
+    </div>
+
+    <div class="diag-question" data-axis="animal" hidden>
+      <h2 class="diag-q-title">🐾 動物が出てくる映画、安否はどこまで気にする？</h2>
+      <div class="diag-choices">
+        <button class="diag-choice" data-value="safe">動物が心配なシーンは絶対避けたい</button>
+        <button class="diag-choice" data-value="warn">注意レベルまでなら仕方ない</button>
+        <button class="diag-choice" data-value="any">ストーリー上必要なら気にしない</button>
+      </div>
+    </div>
+
+    <button class="diag-back-btn" id="backBtn" hidden>← 前の質問に戻る</button>
+  </div>
+
+  <!-- 結果 -->
+  <div class="diag-result" id="diagResult" hidden>
+    <div id="resultRecommend"></div>
+    <div id="resultStretch"></div>
+    <button class="diag-start-btn" id="retryBtn">もう一度診断する</button>
+  </div>
+
+</main>
+
+<script define:vars={{ base, movies }}>
+  const AXES = ['bikkuri', 'guro', 'shinteki', 'shinshoku'];
+  const AXIS_META = {
+    bikkuri:   { icon: '😱', label: 'びっくり度' },
+    guro:      { icon: '🩸', label: 'グロ度' },
+    shinteki:  { icon: '🧠', label: '精神ダメージ' },
+    shinshoku: { icon: '🌃', label: '日常侵食度' },
+  };
+  // 3択「弱い/普通/強い」を実際の耐性スコアに対応させる値。
+  // 弱い=1 だと通る作品が0件になる組み合わせが大量に出るため、弱い=2を採用。
+  const RELAX = { 2: 4, 4: 5, 5: 5 }; // 背伸び枠用：苦手軸を1段階ゆるめる
+  const ANIMAL_LABEL = { safe: '✅ 安全', warn: '⚠️ 注意', danger: '❌ 危険' };
+  const ANIMAL_CLASS = { safe: 'animal-badge-safe', warn: 'animal-badge-warn', danger: 'animal-badge-danger' };
+
+  const diagIntro   = document.getElementById('diagIntro');
+  const diagQuiz    = document.getElementById('diagQuiz');
+  const diagResult  = document.getElementById('diagResult');
+  const startBtn    = document.getElementById('startBtn');
+  const backBtn     = document.getElementById('backBtn');
+  const retryBtn    = document.getElementById('retryBtn');
+  const progressBar = document.getElementById('progressBar');
+  const stepLabel   = document.getElementById('stepLabel');
+  const steps       = Array.from(document.querySelectorAll('.diag-question'));
+
+  let step = 0;
+  const answers = {};
+
+  function showStep(i) {
+    steps.forEach((el, idx) => { el.hidden = idx !== i; });
+    progressBar.style.width = `${((i + 1) / steps.length) * 100}%`;
+    stepLabel.textContent = `Q${i + 1} / ${steps.length}`;
+    backBtn.hidden = i === 0;
+  }
+
+  startBtn.addEventListener('click', () => {
+    diagIntro.hidden = true;
+    diagQuiz.hidden = false;
+    step = 0;
+    showStep(step);
+  });
+
+  steps.forEach(el => {
+    const axis = el.dataset.axis;
+    el.querySelectorAll('.diag-choice').forEach(btn => {
+      btn.addEventListener('click', () => {
+        el.querySelectorAll('.diag-choice').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        answers[axis] = axis === 'animal' ? btn.dataset.value : Number(btn.dataset.value);
+        setTimeout(() => {
+          if (step < steps.length - 1) {
+            step++;
+            showStep(step);
+          } else {
+            computeResult();
+          }
+        }, 180);
+      });
+    });
+  });
+
+  backBtn.addEventListener('click', () => {
+    if (step > 0) {
+      step--;
+      showStep(step);
+    }
+  });
+
+  retryBtn.addEventListener('click', () => {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.querySelectorAll('.diag-choice.selected').forEach(b => b.classList.remove('selected'));
+    diagResult.hidden = true;
+    diagQuiz.hidden = true;
+    diagIntro.hidden = false;
+  });
+
+  function animalOk(movieAnimal, choice) {
+    if (choice === 'safe') return movieAnimal === 'safe';
+    if (choice === 'warn') return movieAnimal !== 'danger';
+    return true; // 'any'
+  }
+
+  function passesAll(m, tol) {
+    return AXES.every(ax => m[ax] <= tol[ax]) && animalOk(m.animal, tol.animal);
+  }
+
+  function totalSlack(m, tol) {
+    return AXES.reduce((s, ax) => s + (tol[ax] - m[ax]), 0);
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+
+  function starsHtml(score) {
+    return Array.from({ length: 5 }, (_, i) => `<span class="star ${i < score ? 'on' : 'off'}">★</span>`).join('');
+  }
+
+  function movieCardHtml(m) {
+    return `
+      <a href="${base}/reviews/${m.id}/" class="review-card-link">
+        <article class="review-card">
+          <div class="card-img"><img src="${base}/${m.image}" alt="${escapeHtml(m.title)}"></div>
+          <div class="card-info">
+            <div class="card-title-row"><span class="card-title">${escapeHtml(m.title)}</span><span class="card-year">${m.year}</span></div>
+            <div class="card-eval">
+              <div class="eval-stars-pair">
+                <div class="eval-bikkuri"><span class="eval-key">😱 びっくり度</span><div class="stars">${starsHtml(m.bikkuri)}</div></div>
+                <div class="eval-bikkuri"><span class="eval-key">🩸 グロ度</span><div class="stars">${starsHtml(m.guro)}</div></div>
+              </div>
+              <div class="eval-stars-pair">
+                <div class="eval-bikkuri"><span class="eval-key">🧠 精神ダメージ</span><div class="stars">${starsHtml(m.shinteki)}</div></div>
+                <div class="eval-bikkuri"><span class="eval-key">🌃 日常侵食度</span><div class="stars">${starsHtml(m.shinshoku)}</div></div>
+              </div>
+              <div class="animal-row"><span class="eval-key">🐾 動物の安否</span><span class="animal-badge ${ANIMAL_CLASS[m.animal]}">${ANIMAL_LABEL[m.animal]}</span></div>
+            </div>
+          </div>
+        </article>
+      </a>`;
+  }
+
+  function resultCardBlock(m, badgeText) {
+    return `<div class="diag-result-card"><span class="diag-badge">${badgeText}</span>${movieCardHtml(m)}</div>`;
+  }
+
+  function computeResult() {
+    const tol = answers;
+    let primary = movies.filter(m => passesAll(m, tol));
+    const fallback = primary.length === 0;
+
+    if (fallback) {
+      primary = [...movies].sort((a, b) =>
+        (a.bikkuri + a.guro + a.shinteki + a.shinshoku) - (b.bikkuri + b.guro + b.shinteki + b.shinshoku));
+    } else {
+      primary = primary.sort((a, b) => totalSlack(a, tol) - totalSlack(b, tol));
+    }
+    const recommend = primary.slice(0, 2);
+
+    // 苦手軸 = 4軸のうち最も耐性が低い（厳しい）軸。
+    // びっくり度は実データのスコアのばらつきが小さく（5点が0本、4点も2本のみ）、
+    // 背伸び枠として緩めても候補がほぼ増えないため、同値の場合は優先度を最も低くする。
+    const WEAK_AXIS_PRIORITY = ['guro', 'shinteki', 'shinshoku', 'bikkuri'];
+    let weakAxis = WEAK_AXIS_PRIORITY[0];
+    for (const ax of WEAK_AXIS_PRIORITY) if (tol[ax] < tol[weakAxis]) weakAxis = ax;
+
+    let stretch = null;
+    const relaxedVal = RELAX[tol[weakAxis]];
+    if (relaxedVal > tol[weakAxis]) {
+      const relaxedTol = { ...tol, [weakAxis]: relaxedVal };
+      const recommendIds = new Set(recommend.map(m => m.id));
+      const stretchCandidates = movies
+        .filter(m => !recommendIds.has(m.id) && !passesAll(m, tol) && passesAll(m, relaxedTol))
+        .sort((a, b) => totalSlack(a, relaxedTol) - totalSlack(b, relaxedTol));
+      stretch = stretchCandidates[0] ?? null;
+    }
+
+    render(recommend, stretch, fallback, weakAxis);
+  }
+
+  function render(recommend, stretch, fallback, weakAxis) {
+    const note = fallback
+      ? '⚠️ ぴったり合う基準の作品は見つかりませんでした。今回はその中で一番マイルドな作品をご紹介します。'
+      : 'あなたの基準に合う作品はこちら！';
+
+    const recommendCards = recommend
+      .map((m, i) => resultCardBlock(m, recommend.length > 1 ? `🎯 おすすめ${i + 1}` : '🎯 おすすめ'))
+      .join('');
+
+    document.getElementById('resultRecommend').innerHTML = `
+      <p class="diag-result-note">${note}</p>
+      <div class="diag-cards">${recommendCards}</div>
+    `;
+
+    const stretchEl = document.getElementById('resultStretch');
+    if (stretch) {
+      const meta = AXIS_META[weakAxis];
+      stretchEl.innerHTML = `
+        <h3 class="diag-section-title">🔥 背伸び枠</h3>
+        <p class="diag-result-note">${meta.icon} ${meta.label}だけ基準を少し広げると、こんな一本も。いつもよりちょっと刺激が欲しいときに挑戦してみてください！</p>
+        <div class="diag-cards">${resultCardBlock(stretch, "🔥 背伸び枠")}</div>
+      `;
+    } else {
+      stretchEl.innerHTML = `
+        <h3 class="diag-section-title">🔥 背伸び枠</h3>
+        <p class="diag-result-note diag-result-note-sub">背伸び枠にちょうどいい作品は見つかりませんでした。もう十分攻略できていそうです。</p>
+      `;
+    }
+
+    diagQuiz.hidden = true;
+    diagResult.hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+<style is:global>
+  /*
+    結果カード（.diag-result-card など）は診断結果をクライアントサイドJSで
+    innerHTML挿入しているため、Astroのscoped CSS（data-astro-cid-*自動付与）が
+    効かない。このページ専用ルールは is:global にして "diag-" 接頭辞で名前衝突を避ける。
+  */
+  .diag-main { max-width: 640px; }
+
+  .diag-intro {
+    text-align: center;
+    padding: 24px 16px;
+  }
+  .diag-intro-img { width: 96px; height: 96px; object-fit: contain; margin: 0 auto 14px; display: block; }
+  .diag-intro-text { font-size: 0.86rem; color: var(--text-mid); line-height: 1.8; margin-bottom: 20px; }
+
+  .diag-start-btn {
+    display: inline-block;
+    background: var(--accent-teal);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.92rem;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 30px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .diag-start-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+
+  .diag-progress {
+    height: 6px;
+    background: var(--bg2);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .diag-progress-bar {
+    height: 100%;
+    width: 20%;
+    background: var(--accent-teal);
+    border-radius: 4px;
+    transition: width 0.25s;
+  }
+  .diag-step-label {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  .diag-q-title {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .diag-choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+  .diag-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .diag-choice:hover { border-color: var(--accent-teal); }
+  .diag-choice.selected {
+    border-color: var(--accent-teal);
+    background: var(--accent-teal-soft);
+    color: var(--accent-teal);
+    font-weight: 700;
+  }
+
+  .diag-back-btn {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 6px 0;
+  }
+  .diag-back-btn:hover { color: var(--accent-teal); }
+
+  .diag-result-note { font-size: 0.85rem; color: var(--text-mid); line-height: 1.7; margin-bottom: 14px; }
+  .diag-result-note-sub { font-size: 0.8rem; }
+
+  .diag-section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 28px 0 10px;
+    padding-left: 10px;
+    border-left: 4px solid var(--accent-red);
+  }
+
+  .diag-cards { display: block; margin-bottom: 16px; }
+  .diag-result-card { display: block; margin-bottom: 12px; }
+  /* style.cssのグローバル規則 @media(min-width:680px/900px) .review-card-link{width:calc(...)}
+     （レビュー一覧を2〜3カラムにするための指定）が診断結果カードにも適用され、
+     カードが縦につぶれて崩れる原因になっていた。詳細度を上げて100%固定に戻す。 */
+  .diag-result-card .review-card-link { width: 100%; }
+  .diag-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-teal);
+    background: var(--accent-teal-soft);
+    border-radius: 20px;
+    padding: 3px 12px;
+    margin-bottom: 6px;
+  }
+
+  .diag-result #retryBtn { display: block; margin: 24px auto 0; }
+</style>
+
+</BaseLayout>
