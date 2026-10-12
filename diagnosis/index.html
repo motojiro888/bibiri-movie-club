@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="ja"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ホラー映画診断｜ビビリ映画部</title><meta name="description" content="5つの質問に答えるだけで、今のあなたの耐性にちょうどいいホラー映画を診断。おすすめ＋ちょっと背伸びできる1本もご紹介します。"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/bibiri-movie-club/assets/css/style.css"><!-- Google Tag Manager --><script type="module">(function(e,n,r,t,m){e[t]=e[t]||[],e[t].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var g=n.getElementsByTagName(r)[0],a=n.createElement(r),s="";a.async=!0,a.src="https://www.googletagmanager.com/gtm.js?id="+m+s,g.parentNode.insertBefore(a,g)})(window,document,"script","dataLayer","GTM-MXW7DG74");</script><!-- End Google Tag Manager --><style>.diag-main{max-width:640px}.diag-intro{text-align:center;padding:24px 16px}.diag-intro-img{width:96px;height:96px;object-fit:contain;margin:0 auto 14px;display:block}.diag-intro-text{font-size:.86rem;color:var(--text-mid);line-height:1.8;margin-bottom:20px}.diag-start-btn{display:inline-block;background:var(--accent-teal);color:#fff;font-weight:700;font-size:.92rem;border:none;border-radius:30px;padding:12px 30px;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}.diag-start-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}.diag-progress{height:6px;background:var(--bg2);border-radius:4px;overflow:hidden;margin-bottom:8px}.diag-progress-bar{height:100%;width:20%;background:var(--accent-teal);border-radius:4px;transition:width .25s}.diag-step-label{font-size:.72rem;color:var(--text-light);font-weight:700;margin-bottom:18px}.diag-q-title{font-size:1rem;line-height:1.6;margin-bottom:16px}.diag-choices{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}.diag-choice{display:block;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:13px 16px;font-size:.85rem;font-family:inherit;color:var(--text);cursor:pointer;transition:border-color .15s,background .15s}.diag-choice:hover{border-color:var(--accent-teal)}.diag-choice.selected{border-color:var(--accent-teal);background:var(--accent-teal-soft);color:var(--accent-teal);font-weight:700}.diag-back-btn{background:none;border:none;color:var(--text-light);font-size:.8rem;cursor:pointer;padding:6px 0}.diag-back-btn:hover{color:var(--accent-teal)}.diag-result-note{font-size:.85rem;color:var(--text-mid);line-height:1.7;margin-bottom:14px}.diag-result-note-sub{font-size:.8rem}.diag-section-title{font-size:.95rem;font-weight:700;margin:28px 0 10px;padding-left:10px;border-left:4px solid var(--accent-red)}.diag-cards{display:block;margin-bottom:16px}.diag-result-card{display:block;margin-bottom:12px}.diag-result-card .review-card-link{width:100%}.diag-badge{display:inline-block;font-size:.72rem;font-weight:700;color:var(--accent-teal);background:var(--accent-teal-soft);border-radius:20px;padding:3px 12px;margin-bottom:6px}.diag-result #retryBtn{display:block;margin:24px auto 0}
+</style></head> <body> <!-- Google Tag Manager (noscript) --> <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MXW7DG74" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <!-- End Google Tag Manager (noscript) --> <header> <div class="header-inner"> <a href="/bibiri-movie-club/" class="site-title-wrap"> <span class="site-title">ビビリ映画部</span> <span class="site-subtitle">ビビリのための映画レビュー</span> </a> <nav class="pc-nav"> <a href="/bibiri-movie-club/reviews/">レビュー一覧</a> <a href="/bibiri-movie-club/articles/">まとめ記事一覧</a> <a href="/bibiri-movie-club/diagnosis/">ホラー映画診断</a> </nav> <button class="hamburger" id="hamburger" aria-label="メニューを開く"> <span></span><span></span><span></span> </button> </div> </header> <nav class="drawer" id="drawer"> <a href="/bibiri-movie-club/reviews/">レビュー一覧</a> <a href="/bibiri-movie-club/articles/">まとめ記事一覧</a> <a href="/bibiri-movie-club/diagnosis/">ホラー映画診断</a> </nav>  <div class="page-hero"> <div class="page-hero-inner"> <h1>ホラー映画診断</h1> <p>5つの質問に答えて、今のあなたにちょうどいい一本を見つけよう</p> </div> </div> <main class="diag-main"> <!-- イントロ --> <div class="diag-intro" id="diagIntro"> <img src="/bibiri-movie-club/assets/images/motojiro-excited.png" alt="やる気のモトジロウ" class="motojiro-img diag-intro-img"> <p class="diag-intro-text">「びっくり度」「グロ度」「精神ダメージ」「日常侵食度」の4軸と、動物の安否への耐性を聞いて、全42作品からあなたにぴったりの一本＋ちょっと背伸びできる一本を診断します。</p> <button class="diag-start-btn" id="startBtn">診断をはじめる →</button> </div> <!-- クイズ --> <div class="diag-quiz" id="diagQuiz" hidden> <div class="diag-progress"><div class="diag-progress-bar" id="progressBar"></div></div> <div class="diag-step-label" id="stepLabel">Q1 / 5</div> <div class="diag-question" data-axis="bikkuri"> <h2 class="diag-q-title">😱 不意打ちの「びっくり」演出への耐性は？</h2> <div class="diag-choices"> <button class="diag-choice" data-value="2">不意打ちに弱い…心臓に悪い</button> <button class="diag-choice" data-value="4">身構えていれば大丈夫</button> <button class="diag-choice" data-value="5">全然平気、むしろ好き</button> </div> </div> <div class="diag-question" data-axis="guro" hidden> <h2 class="diag-q-title">🩸 血や身体的な描写への耐性は？</h2> <div class="diag-choices"> <button class="diag-choice" data-value="2">直視できない、想像するだけでしんどい</button> <button class="diag-choice" data-value="4">多少の描写なら大丈夫</button> <button class="diag-choice" data-value="5">グロ耐性はかなりある</button> </div> </div> <div class="diag-question" data-axis="shinteki" hidden> <h2 class="diag-q-title">🧠 観ている間ずっと続く「嫌な緊張感」は平気？</h2> <div class="diag-choices"> <button class="diag-choice" data-value="2">気が重くなって耐えられなそう</button> <button class="diag-choice" data-value="4">ある程度の重さなら受け止められる</button> <button class="diag-choice" data-value="5">精神的に追い込まれる系も平気</button> </div> </div> <div class="diag-question" data-axis="shinshoku" hidden> <h2 class="diag-q-title">🌃 観終わった後もじわじわ怖さが残るタイプは平気？</h2> <div class="diag-choices"> <button class="diag-choice" data-value="2">観た後まで怖いのはできるだけ避けたい</button> <button class="diag-choice" data-value="4">多少は仕方ない、受け入れられる</button> <button class="diag-choice" data-value="5">後を引く系、むしろ好き</button> </div> </div> <div class="diag-question" data-axis="animal" hidden> <h2 class="diag-q-title">🐾 動物が出てくる映画、安否はどこまで気にする？</h2> <div class="diag-choices"> <button class="diag-choice" data-value="safe">動物が心配なシーンは絶対避けたい</button> <button class="diag-choice" data-value="warn">注意レベルまでなら仕方ない</button> <button class="diag-choice" data-value="any">ストーリー上必要なら気にしない</button> </div> </div> <button class="diag-back-btn" id="backBtn" hidden>← 前の質問に戻る</button> </div> <!-- 結果 --> <div class="diag-result" id="diagResult" hidden> <div id="resultRecommend"></div> <div id="resultStretch"></div> <button class="diag-start-btn" id="retryBtn">もう一度診断する</button> </div> </main> <script>(function(){const base = "/bibiri-movie-club";
+const movies = [{"id":"hereditary","title":"ヘレディタリー／継承","year":2018,"image":"/assets/images/hereditary.webp","animal":"warn","bikkuri":4,"guro":4,"shinteki":5,"shinshoku":5},{"id":"midsommar","title":"ミッドサマー","year":2019,"image":"/assets/images/midsommar.webp","animal":"warn","bikkuri":2,"guro":3,"shinteki":4,"shinshoku":3},{"id":"beau-is-afraid","title":"ボーはおそれている","year":2023,"image":"/assets/images/beau-is-afraid.webp","animal":"safe","bikkuri":3,"guro":3,"shinteki":4,"shinshoku":3},{"id":"get-out","title":"ゲットアウト","year":2017,"image":"/assets/images/get-out.webp","animal":"safe","bikkuri":2,"guro":2,"shinteki":4,"shinshoku":4},{"id":"talk-to-me","title":"TALK TO ME","year":2022,"image":"/assets/images/talk-to-me.webp","animal":"warn","bikkuri":2,"guro":3,"shinteki":3,"shinshoku":3},{"id":"the-killing-of-a-sacred-deer","title":"聖なる鹿殺し","year":2017,"image":"/assets/images/the-killing-of-a-sacred-deer.webp","animal":"warn","bikkuri":2,"guro":2,"shinteki":4,"shinshoku":3},{"id":"lamb","title":"ラム","year":2021,"image":"/assets/images/lamb.webp","animal":"warn","bikkuri":2,"guro":2,"shinteki":3,"shinshoku":3},{"id":"us","title":"アス","year":2019,"image":"/assets/images/us.webp","animal":"warn","bikkuri":3,"guro":3,"shinteki":3,"shinshoku":3},{"id":"esther","title":"エスター","year":2009,"image":"/assets/images/esther.webp","animal":"warn","bikkuri":3,"guro":1,"shinteki":4,"shinshoku":3},{"id":"suspiria","title":"サスペリア","year":1977,"image":"/assets/images/suspiria.webp","animal":"warn","bikkuri":3,"guro":3,"shinteki":4,"shinshoku":3},{"id":"munasawagi","title":"胸騒ぎ","year":2022,"image":"/assets/images/munasawagi.webp","animal":"warn","bikkuri":2,"guro":3,"shinteki":5,"shinshoku":4},{"id":"speaknoevil","title":"スピーク・ノー・イーブル","year":2024,"image":"/assets/images/speaknoevil.webp","animal":"warn","bikkuri":3,"guro":2,"shinteki":3,"shinshoku":2},{"id":"the-innocents","title":"イノセンツ","year":2021,"image":"/assets/images/the-innocents.webp","animal":"danger","bikkuri":2,"guro":4,"shinteki":5,"shinshoku":4},{"id":"together","title":"トゥギャザー","year":2025,"image":"/assets/images/together.webp","animal":"warn","bikkuri":2,"guro":4,"shinteki":2,"shinshoku":2},{"id":"scream","title":"スクリーム（1996）","year":1996,"image":"/assets/images/scream-1996.webp","animal":"safe","bikkuri":3,"guro":2,"shinteki":2,"shinshoku":2},{"id":"scary-movie","title":"最終絶叫計画","year":2000,"image":"/assets/images/scary-movie.webp","animal":"safe","bikkuri":1,"guro":2,"shinteki":1,"shinshoku":1},{"id":"substance","title":"サブスタンス","year":2024,"image":"/assets/images/substance.webp","animal":"safe","bikkuri":2,"guro":5,"shinteki":3,"shinshoku":3},{"id":"sick-of-myself","title":"シック・オブ・マイセルフ","year":2022,"image":"/assets/images/sick-of-myself.webp","animal":"safe","bikkuri":1,"guro":3,"shinteki":4,"shinshoku":3},{"id":"scream2","title":"スクリーム2","year":1997,"image":"/assets/images/scream2.webp","animal":"safe","bikkuri":3,"guro":2,"shinteki":2,"shinshoku":2},{"id":"devils-bath","title":"デビルズ・バス","year":2024,"image":"/assets/images/devils-bath.webp","animal":"warn","bikkuri":1,"guro":3,"shinteki":5,"shinshoku":2},{"id":"antichrist","title":"アンチ・クライスト","year":2009,"image":"/assets/images/antichrist.webp","animal":"danger","bikkuri":2,"guro":5,"shinteki":5,"shinshoku":3},{"id":"inland-empire","title":"インランド・エンパイア","year":2006,"image":"/assets/images/inland-empire.webp","animal":"safe","bikkuri":3,"guro":1,"shinteki":5,"shinshoku":5},{"id":"soft-and-quiet","title":"ソフト／クワイエット","year":2022,"image":"/assets/images/soft-and-quiet.webp","animal":"safe","bikkuri":2,"guro":3,"shinteki":5,"shinshoku":4},{"id":"girl-with-needle","title":"ガール・ウィズ・ニードル","year":2024,"image":"/assets/images/girl-with-needle.webp","animal":"safe","bikkuri":2,"guro":3,"shinteki":5,"shinshoku":3},{"id":"mother","title":"マザー！","year":2017,"image":"/assets/images/mother.webp","animal":"warn","bikkuri":2,"guro":3,"shinteki":5,"shinshoku":3},{"id":"frewaka","title":"FRÉWAKA／フレワカ","year":2024,"image":"/assets/images/frewaka.webp","animal":"safe","bikkuri":2,"guro":2,"shinteki":4,"shinshoku":3},{"id":"m3gan","title":"ミーガン","year":2023,"image":"/assets/images/m3gan.webp","animal":"warn","bikkuri":3,"guro":2,"shinteki":2,"shinshoku":2},{"id":"scream3","title":"スクリーム3","year":2000,"image":"/assets/images/scream3.webp","animal":"safe","bikkuri":3,"guro":2,"shinteki":2,"shinshoku":2},{"id":"nope","title":"NOPE／ノープ","year":2022,"image":"/assets/images/nope.webp","animal":"warn","bikkuri":3,"guro":2,"shinteki":3,"shinshoku":3},{"id":"dream-scenario","title":"ドリーム・シナリオ","year":2024,"image":"/assets/images/dream-scenario.webp","animal":"warn","bikkuri":3,"guro":3,"shinteki":4,"shinshoku":4},{"id":"the-evil-dead","title":"死霊のはらわた","year":1981,"image":"/assets/images/the-evil-dead.webp","animal":"safe","bikkuri":4,"guro":4,"shinteki":3,"shinshoku":2},{"id":"funny-games","title":"ファニーゲーム","year":1997,"image":"/assets/images/funny-games.webp","animal":"danger","bikkuri":1,"guro":2,"shinteki":5,"shinshoku":4},{"id":"pink-flamingos","title":"ピンク・フラミンゴ","year":1972,"image":"/assets/images/pink-flamingos.webp","animal":"danger","bikkuri":1,"guro":4,"shinteki":4,"shinshoku":3},{"id":"scream5","title":"スクリーム（2022）","year":2022,"image":"/assets/images/scream-2022.webp","animal":"safe","bikkuri":3,"guro":4,"shinteki":3,"shinshoku":2},{"id":"scream4","title":"スクリーム4","year":2011,"image":"/assets/images/scream4.webp","animal":"safe","bikkuri":3,"guro":3,"shinteki":2,"shinshoku":2},{"id":"martyrs","title":"マーターズ","year":2008,"image":"/assets/images/martyrs.webp","animal":"safe","bikkuri":3,"guro":5,"shinteki":5,"shinshoku":2},{"id":"scream6","title":"スクリーム6","year":2023,"image":"/assets/images/scream6.webp","animal":"safe","bikkuri":3,"guro":3,"shinteki":2,"shinshoku":2},{"id":"scream7","title":"スクリーム7","year":2026,"image":"/assets/images/scream7.webp","animal":"safe","bikkuri":3,"guro":3,"shinteki":3,"shinshoku":2},{"id":"human-centipede-2","title":"ムカデ人間2","year":2011,"image":"/assets/images/human-centipede-2.webp","animal":"safe","bikkuri":1,"guro":5,"shinteki":5,"shinshoku":2},{"id":"human-centipede","title":"ムカデ人間","year":2009,"image":"/assets/images/human-centipede.webp","animal":"safe","bikkuri":1,"guro":2,"shinteki":5,"shinshoku":2},{"id":"human-centipede-3","title":"ムカデ人間3","year":2015,"image":"/assets/images/human-centipede-3.webp","animal":"safe","bikkuri":1,"guro":4,"shinteki":2,"shinshoku":1},{"id":"inside","title":"屋敷女","year":2007,"image":"/assets/images/inside.webp","animal":"danger","bikkuri":3,"guro":5,"shinteki":5,"shinshoku":4}];
+
+  const AXES = ['bikkuri', 'guro', 'shinteki', 'shinshoku'];
+  const AXIS_META = {
+    bikkuri:   { icon: '😱', label: 'びっくり度' },
+    guro:      { icon: '🩸', label: 'グロ度' },
+    shinteki:  { icon: '🧠', label: '精神ダメージ' },
+    shinshoku: { icon: '🌃', label: '日常侵食度' },
+  };
+  // 3択「弱い/普通/強い」を実際の耐性スコアに対応させる値。
+  // 弱い=1 だと通る作品が0件になる組み合わせが大量に出るため、弱い=2を採用。
+  const RELAX = { 2: 4, 4: 5, 5: 5 }; // 背伸び枠用：苦手軸を1段階ゆるめる
+  const ANIMAL_LABEL = { safe: '✅ 安全', warn: '⚠️ 注意', danger: '❌ 危険' };
+  const ANIMAL_CLASS = { safe: 'animal-badge-safe', warn: 'animal-badge-warn', danger: 'animal-badge-danger' };
+
+  const diagIntro   = document.getElementById('diagIntro');
+  const diagQuiz    = document.getElementById('diagQuiz');
+  const diagResult  = document.getElementById('diagResult');
+  const startBtn    = document.getElementById('startBtn');
+  const backBtn     = document.getElementById('backBtn');
+  const retryBtn    = document.getElementById('retryBtn');
+  const progressBar = document.getElementById('progressBar');
+  const stepLabel   = document.getElementById('stepLabel');
+  const steps       = Array.from(document.querySelectorAll('.diag-question'));
+
+  let step = 0;
+  const answers = {};
+
+  function showStep(i) {
+    steps.forEach((el, idx) => { el.hidden = idx !== i; });
+    progressBar.style.width = `${((i + 1) / steps.length) * 100}%`;
+    stepLabel.textContent = `Q${i + 1} / ${steps.length}`;
+    backBtn.hidden = i === 0;
+  }
+
+  startBtn.addEventListener('click', () => {
+    diagIntro.hidden = true;
+    diagQuiz.hidden = false;
+    step = 0;
+    showStep(step);
+  });
+
+  steps.forEach(el => {
+    const axis = el.dataset.axis;
+    el.querySelectorAll('.diag-choice').forEach(btn => {
+      btn.addEventListener('click', () => {
+        el.querySelectorAll('.diag-choice').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        answers[axis] = axis === 'animal' ? btn.dataset.value : Number(btn.dataset.value);
+        setTimeout(() => {
+          if (step < steps.length - 1) {
+            step++;
+            showStep(step);
+          } else {
+            computeResult();
+          }
+        }, 180);
+      });
+    });
+  });
+
+  backBtn.addEventListener('click', () => {
+    if (step > 0) {
+      step--;
+      showStep(step);
+    }
+  });
+
+  retryBtn.addEventListener('click', () => {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.querySelectorAll('.diag-choice.selected').forEach(b => b.classList.remove('selected'));
+    diagResult.hidden = true;
+    diagQuiz.hidden = true;
+    diagIntro.hidden = false;
+  });
+
+  function animalOk(movieAnimal, choice) {
+    if (choice === 'safe') return movieAnimal === 'safe';
+    if (choice === 'warn') return movieAnimal !== 'danger';
+    return true; // 'any'
+  }
+
+  function passesAll(m, tol) {
+    return AXES.every(ax => m[ax] <= tol[ax]) && animalOk(m.animal, tol.animal);
+  }
+
+  function totalSlack(m, tol) {
+    return AXES.reduce((s, ax) => s + (tol[ax] - m[ax]), 0);
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+
+  function starsHtml(score) {
+    return Array.from({ length: 5 }, (_, i) => `<span class="star ${i < score ? 'on' : 'off'}">★</span>`).join('');
+  }
+
+  function movieCardHtml(m) {
+    return `
+      <a href="${base}/reviews/${m.id}/" class="review-card-link">
+        <article class="review-card">
+          <div class="card-img"><img src="${base}/${m.image}" alt="${escapeHtml(m.title)}"></div>
+          <div class="card-info">
+            <div class="card-title-row"><span class="card-title">${escapeHtml(m.title)}</span><span class="card-year">${m.year}</span></div>
+            <div class="card-eval">
+              <div class="eval-stars-pair">
+                <div class="eval-bikkuri"><span class="eval-key">😱 びっくり度</span><div class="stars">${starsHtml(m.bikkuri)}</div></div>
+                <div class="eval-bikkuri"><span class="eval-key">🩸 グロ度</span><div class="stars">${starsHtml(m.guro)}</div></div>
+              </div>
+              <div class="eval-stars-pair">
+                <div class="eval-bikkuri"><span class="eval-key">🧠 精神ダメージ</span><div class="stars">${starsHtml(m.shinteki)}</div></div>
+                <div class="eval-bikkuri"><span class="eval-key">🌃 日常侵食度</span><div class="stars">${starsHtml(m.shinshoku)}</div></div>
+              </div>
+              <div class="animal-row"><span class="eval-key">🐾 動物の安否</span><span class="animal-badge ${ANIMAL_CLASS[m.animal]}">${ANIMAL_LABEL[m.animal]}</span></div>
+            </div>
+          </div>
+        </article>
+      </a>`;
+  }
+
+  function resultCardBlock(m, badgeText) {
+    return `<div class="diag-result-card"><span class="diag-badge">${badgeText}</span>${movieCardHtml(m)}</div>`;
+  }
+
+  function computeResult() {
+    const tol = answers;
+    let primary = movies.filter(m => passesAll(m, tol));
+    const fallback = primary.length === 0;
+
+    if (fallback) {
+      primary = [...movies].sort((a, b) =>
+        (a.bikkuri + a.guro + a.shinteki + a.shinshoku) - (b.bikkuri + b.guro + b.shinteki + b.shinshoku));
+    } else {
+      primary = primary.sort((a, b) => totalSlack(a, tol) - totalSlack(b, tol));
+    }
+    const recommend = primary.slice(0, 2);
+
+    // 苦手軸 = 4軸のうち最も耐性が低い（厳しい）軸。
+    // びっくり度は実データのスコアのばらつきが小さく（5点が0本、4点も2本のみ）、
+    // 背伸び枠として緩めても候補がほぼ増えないため、同値の場合は優先度を最も低くする。
+    const WEAK_AXIS_PRIORITY = ['guro', 'shinteki', 'shinshoku', 'bikkuri'];
+    let weakAxis = WEAK_AXIS_PRIORITY[0];
+    for (const ax of WEAK_AXIS_PRIORITY) if (tol[ax] < tol[weakAxis]) weakAxis = ax;
+
+    let stretch = null;
+    const relaxedVal = RELAX[tol[weakAxis]];
+    if (relaxedVal > tol[weakAxis]) {
+      const relaxedTol = { ...tol, [weakAxis]: relaxedVal };
+      const recommendIds = new Set(recommend.map(m => m.id));
+      const stretchCandidates = movies
+        .filter(m => !recommendIds.has(m.id) && !passesAll(m, tol) && passesAll(m, relaxedTol))
+        .sort((a, b) => totalSlack(a, relaxedTol) - totalSlack(b, relaxedTol));
+      stretch = stretchCandidates[0] ?? null;
+    }
+
+    render(recommend, stretch, fallback, weakAxis);
+  }
+
+  function render(recommend, stretch, fallback, weakAxis) {
+    const note = fallback
+      ? '⚠️ ぴったり合う基準の作品は見つかりませんでした。今回はその中で一番マイルドな作品をご紹介します。'
+      : 'あなたの基準に合う作品はこちら！';
+
+    const recommendCards = recommend
+      .map((m, i) => resultCardBlock(m, recommend.length > 1 ? `🎯 おすすめ${i + 1}` : '🎯 おすすめ'))
+      .join('');
+
+    document.getElementById('resultRecommend').innerHTML = `
+      <p class="diag-result-note">${note}</p>
+      <div class="diag-cards">${recommendCards}</div>
+    `;
+
+    const stretchEl = document.getElementById('resultStretch');
+    if (stretch) {
+      const meta = AXIS_META[weakAxis];
+      stretchEl.innerHTML = `
+        <h3 class="diag-section-title">🔥 背伸び枠</h3>
+        <p class="diag-result-note">${meta.icon} ${meta.label}だけ基準を少し広げると、こんな一本も。いつもよりちょっと刺激が欲しいときに挑戦してみてください！</p>
+        <div class="diag-cards">${resultCardBlock(stretch, "🔥 背伸び枠")}</div>
+      `;
+    } else {
+      stretchEl.innerHTML = `
+        <h3 class="diag-section-title">🔥 背伸び枠</h3>
+        <p class="diag-result-note diag-result-note-sub">背伸び枠にちょうどいい作品は見つかりませんでした。もう十分攻略できていそうです。</p>
+      `;
+    }
+
+    diagQuiz.hidden = true;
+    diagResult.hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+})();</script>  <footer> <div class="footer-inner"> <img src="/bibiri-movie-club/assets/images/motojiro-smile.png" alt="笑っているモトジロウ" class="motojiro-img motojiro-footer"> <p>&copy; 2026 ビビリ映画部 — モトジロウと一緒に、安心して映画を楽しもう</p> </div> </footer> <script type="module">const o=document.getElementById("hamburger"),d=document.getElementById("drawer");o.addEventListener("click",()=>{o.classList.toggle("open"),d.classList.toggle("open")});const t=document.getElementById("modalOverlay");function l(){t.classList.add("open"),document.body.style.overflow="hidden"}function n(){t.classList.remove("open"),document.body.style.overflow=""}document.getElementById("modalClose").addEventListener("click",n);t.addEventListener("click",e=>{e.target===t&&n()});document.addEventListener("keydown",e=>{e.key==="Escape"&&n()});document.querySelectorAll("#helpBtn, .help-btn").forEach(e=>{e.addEventListener("click",l)});</script> <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle"> <div class="modal"> <div class="modal-header"> <div class="modal-title" id="modalTitle"> <span class="modal-title-icon">？</span>
+評価の見方
+</div> <button class="modal-close" id="modalClose" aria-label="閉じる">✕</button> </div> <div class="modal-body"> <div class="modal-item"> <div class="modal-item-head"><span class="modal-item-icon">😱</span><span class="modal-item-title">びっくり度</span></div> <div class="modal-item-desc">ジャンプスケア・突然の大音量・急な飛び出し演出の強さ。★1：ほぼなし ／ ★5：かなり激しい</div> </div> <div class="modal-divider"></div> <div class="modal-item"> <div class="modal-item-head"><span class="modal-item-icon">🩸</span><span class="modal-item-title">グロ度</span></div> <div class="modal-item-desc">血・身体欠損・視覚的ショックシーンの強さ。★1：ほぼなし ／ ★5：かなり強烈</div> </div> <div class="modal-divider"></div> <div class="modal-item"> <div class="modal-item-head"><span class="modal-item-icon">🧠</span><span class="modal-item-title">精神ダメージ</span></div> <div class="modal-item-desc">心理的圧迫・日常侵食・後引き度の強さ。★1：ほぼなし ／ ★5：観後もじわじわくる</div> </div> <div class="modal-divider"></div> <div class="modal-item"> <div class="modal-item-head"><span class="modal-item-icon">🐾</span><span class="modal-item-title">動物の安否</span></div> <div class="modal-item-desc">映画内で動物が危険にさらされるかどうかの事前指標です。</div> <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;"> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;background:var(--safe-bg);color:var(--safe);">✅ 安全</span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;background:var(--warn-bg);color:var(--warn);">⚠️ 注意</span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;background:var(--danger-bg);color:var(--danger);">❌ 危険</span> </div> </div> <div class="modal-note">💡 すべての評価はレビュアーの主観に基づきます。あくまで参考としてご活用ください。</div> </div> </div> </div> </body></html>
