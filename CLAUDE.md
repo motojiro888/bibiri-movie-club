@@ -15,16 +15,17 @@
 
 ```
 src/
-  content.config.js     ← レビューデータのスキーマ（ルールに合わないとビルドが止まる）
+  content.config.js     ← レビュー・まとめ記事のスキーマ（ルールに合わないとビルドが止まる）
   content/
     reviews/
       hereditary.yaml   ← 個別レビューデータ
       midsommar.yaml
       ... （1映画 = 1ファイル。ファイル名がそのまま id / URL になる）
-  data/
-    articles.js         ← まとめ記事データ
+    articles/
+      ari-aster-review.md ← まとめ記事（1記事 = 1ファイル。ファイル名がそのまま id / URL になる）
   utils/
     reviews.js          ← getReviews()：全レビューを sortOrder 順で読み込む共通関数
+    articles.js         ← getArticles()：まとめ記事を読み込み、本文の構成チェックとHTML変換をする共通関数
   pages/
     reviews/
       [id].astro        ← 詳細ページ（動的ルーティング）
@@ -51,9 +52,10 @@ public/
   timestamps.md             ← タイムスタンプ生成ルール
   comparison-style.md        ← 比較表現・擬音語ルール
   consistency-check.md        ← レビュー整合性チェック
+  article-schema.md            ← まとめ記事の追加手順・Markdownの書き方
 ```
 
-レビュー関連の詳細ルールは `.clauderules/` 配下に分割している。該当ファイル（`src/content/reviews/*.yaml` など）を読み書きするタイミングで自動的に読み込まれる。
+レビュー・まとめ記事の詳細ルールは `.clauderules/` 配下に分割している。該当ファイル（`src/content/reviews/*.yaml`・`src/content/articles/*.md` など）を読み書きするタイミングで自動的に読み込まれる。
 
 ---
 
@@ -63,6 +65,7 @@ public/
 - ソートキーが `publishedAt` なのは、編集時の `updatedAt` 変更で順番が変わらないようにするため
 - 公開日が同じ作品どうしは `sortOrder` の小さいほうが一覧の上に来る。入れ替えたいときは2作品の `sortOrder` を交換する
 - 新しい映画の `sortOrder` は、既存の最大値＋1 にする（重複するとビルドが止まる）
+- まとめ記事は、トップページ・まとめ記事一覧とも `publishedAt` の降順（新しい順）に並ぶ
 
 ---
 
@@ -102,6 +105,10 @@ src/content/reviews/xxx.yaml の [フィールド名] を [新しい値] に修�
 updatedAt も今日の日付（YYYY-MM-DD）に更新してください。
 ※ reviews-list.csv 側も該当列があれば同様に更新してください。
 ```
+
+### まとめ記事の追加・修正
+
+`src/content/articles/[id].md` を1ファイル作成・編集する。本文は「イントロ → `## 作品ID`（紹介する作品の数だけ）→ `## 総評`」の順で書く。書き方の詳細は `.clauderules/article-schema.md` を参照。まとめ記事は `reviews-list.csv` の対象外。
 
 ---
 

@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { articles } from '../../data/articles.js';
+import { getArticles } from '../../utils/articles.js';
 import { getReviews } from '../../utils/reviews.js';
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const articles = await getArticles();
   return articles.map(a => ({ params: { id: a.id }, props: { article: a } }));
 }
 
@@ -13,7 +14,7 @@ const reviews = await getReviews();
 
 const films = article.filmIds.map(id => ({
   review: reviews.find(r => r.id === id),
-  comment: article.filmComments.find(c => c.id === id)?.comment,
+  commentHtml: article.filmComments.find(c => c.id === id)?.html,
 }));
 
 function stars(count, max = 5) {
@@ -49,13 +50,7 @@ const difficultyLabel = { beginner: '✓ 初心者向け', mid: '🟡 中級', a
     ))}
   </div>
 
-  {article.intro.split('\n\n').map(paragraph => (
-    <p class="article-lead" style="margin-bottom:12px;">
-      {paragraph.split('\n').map((line, i, arr) => (
-        i < arr.length - 1 ? <>{line}<br /></> : line
-      ))}
-    </p>
-  ))}
+  <Fragment set:html={article.introHtml.replaceAll('<p>', '<p class="article-lead" style="margin-bottom:12px;">')} />
 
   <nav class="toc-block" aria-label="目次">
     <div class="toc-title">📋 目次</div>
@@ -72,7 +67,7 @@ const difficultyLabel = { beginner: '✓ 初心者向け', mid: '🟡 中級', a
   {films.map(f => (
     <div class="section-block" id={`film-${f.review.id}`}>
       <h2 class="section-heading">{f.review.title}（{f.review.year}）</h2>
-      <p class="article-lead">{f.comment}</p>
+      <Fragment set:html={f.commentHtml.replaceAll('<p>', '<p class="article-lead">')} />
       <a href={`${base}/reviews/${f.review.id}`} class="review-card-link" style="width:100%;">
         <div class="review-card" style="flex-direction:column; align-items:stretch;">
           <div style="display:flex; gap:12px; align-items:center; padding:12px;">
@@ -154,8 +149,8 @@ const difficultyLabel = { beginner: '✓ 初心者向け', mid: '🟡 中級', a
   <div class="section-block">
     <h2 class="section-heading" id="section-motojiro">モトジロウの総評</h2>
     <div class="motojiro-casual">
-      <img src={`${base}/${article.motojiroImg}`} alt={article.motojiroAlt} class="motojiro-img motojiro-review">
-      <div class="casual-bubble">{article.motojiroComment}</div>
+      <img src={`${base}${article.motojiroImg}`} alt={article.motojiroAlt} class="motojiro-img motojiro-review">
+      <div class="casual-bubble" set:html={article.motojiroHtml}></div>
     </div>
   </div>
 

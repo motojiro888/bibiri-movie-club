@@ -10,6 +10,14 @@ const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'YYYY-MM-DD 形式で書い
 
 const ANIMAL_LABEL = { safe: '✅ 安全', warn: '⚠️ 注意', danger: '❌ 危険' };
 
+const motojiroImg = z.enum([
+  '/assets/images/motojiro-soul-out.png',
+  '/assets/images/motojiro-shocked.png',
+  '/assets/images/motojiro-scared.png',
+  '/assets/images/motojiro-sweating.png',
+  '/assets/images/motojiro-excited.png',
+]);
+
 // fearCards は必ずこの順番で4枚
 const fearCard = (icon, title) =>
   z.strictObject({
@@ -45,13 +53,7 @@ const reviews = defineCollection({
       bikkuri: score,
       guro: score,
       image: z.string().regex(/^\/assets\/images\/[a-z0-9-]+\.webp$/, '/assets/images/[id].webp 形式で書いてください'),
-      motojiroImg: z.enum([
-        '/assets/images/motojiro-soul-out.png',
-        '/assets/images/motojiro-shocked.png',
-        '/assets/images/motojiro-scared.png',
-        '/assets/images/motojiro-sweating.png',
-        '/assets/images/motojiro-excited.png',
-      ]),
+      motojiroImg,
       motojiroAlt: z.string().min(1),
       publishedAt: date,
       updatedAt: date,
@@ -97,4 +99,33 @@ const reviews = defineCollection({
     }),
 });
 
-export const collections = { reviews };
+// まとめ記事のルール。src/content/articles/[id].md を1記事1ファイルで置く。
+// 本文の書き方（イントロ・「## 作品ID」・「## 総評」）は src/utils/articles.js がチェックする。
+const articles = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/articles' }),
+  schema: z
+    .strictObject({
+      title: z.string().min(1),
+      publishedAt: date,
+      updatedAt: date,
+      motojiroImg,
+      motojiroAlt: z.string().min(1),
+      // 「結局どれから観ればいい？」の欄
+      recommendations: z
+        .array(
+          z.strictObject({
+            label: z.string().min(1),
+            filmId: z.string().regex(/^[a-z0-9-]+$/, '作品ID（ファイル名）で書いてください'),
+            reason: z.string().min(1),
+          }),
+        )
+        .min(1),
+    })
+    .superRefine((a, ctx) => {
+      if (a.updatedAt < a.publishedAt) {
+        ctx.addIssue({ code: 'custom', path: ['updatedAt'], message: 'publishedAt より前の日付になっています' });
+      }
+    }),
+});
+
+export const collections = { reviews, articles };
