@@ -15,14 +15,16 @@
 
 ```
 src/
-  data/
+  content.config.js     ← レビューデータのスキーマ（ルールに合わないとビルドが止まる）
+  content/
     reviews/
-      index.js          ← 全レビューのimport/exportバレル
-      hereditary.js     ← 個別レビューデータ（詳細）
-      midsommar.js
-      ... （1映画 = 1ファイル）
-    reviews.js          ← 軽量フラット配列（詳細ページ下部の「関連作品」でのみ使用）
+      hereditary.yaml   ← 個別レビューデータ
+      midsommar.yaml
+      ... （1映画 = 1ファイル。ファイル名がそのまま id / URL になる）
+  data/
     articles.js         ← まとめ記事データ
+  utils/
+    reviews.js          ← getReviews()：全レビューを sortOrder 順で読み込む共通関数
   pages/
     reviews/
       [id].astro        ← 詳細ページ（動的ルーティング）
@@ -51,16 +53,16 @@ public/
   consistency-check.md        ← レビュー整合性チェック
 ```
 
-レビュー関連の詳細ルールは `.clauderules/` 配下に分割している。該当ファイル（`src/data/reviews/*.js` など）を読み書きするタイミングで自動的に読み込まれる。
+レビュー関連の詳細ルールは `.clauderules/` 配下に分割している。該当ファイル（`src/content/reviews/*.yaml` など）を読み書きするタイミングで自動的に読み込まれる。
 
 ---
 
 ## ソート順のルール
 
-- 一覧ページ（`reviews/index.astro`）は `reviews/index.js` を読み込み、`publishedAt` の降順（新しい順）にソートして表示する。配列の並び順は表示順に影響しない
+- 一覧ページ（`reviews/index.astro`）は `publishedAt` の降順（新しい順）に並べて表示する
 - ソートキーが `publishedAt` なのは、編集時の `updatedAt` 変更で順番が変わらないようにするため
-- 一覧の表示順を変えたいときは、配列ではなく `publishedAt` を調整する（同日公開の作品どうしの順番は配列順に依存するため、入れ替えたい場合は配列順を変える）
-- 新しい映画は `reviews/index.js`・`reviews.js` とも配列の末尾に追加する（管理しやすさのための慣習）
+- 公開日が同じ作品どうしは `sortOrder` の小さいほうが一覧の上に来る。入れ替えたいときは2作品の `sortOrder` を交換する
+- 新しい映画の `sortOrder` は、既存の最大値＋1 にする（重複するとビルドが止まる）
 
 ---
 
@@ -87,20 +89,18 @@ const base = import.meta.env.BASE_URL;
 - title: xxx
 （データを渡す）
 
-更新するファイル：
-1. src/data/reviews/xxx.js を新規作成
-2. src/data/reviews/index.js にimportとexportを追加
-3. src/data/reviews.js の配列末尾にカードデータを追加
 ```
+
+データはJSオブジェクト形式で渡されることが多い。Claude Code が YAML に変換して `src/content/reviews/[id].yaml` を1ファイル作成する（`id` はファイル名にするので YAML には書かない。`sortOrder` を足す）。あわせて `reviews-list.csv` に1行追加する。
 
 詳細なフィールド仕様・コード例は `.clauderules/review-schema.md` を参照。
 
 ### 既存レビューの修正
 
 ```
-src/data/reviews/xxx.js の [フィールド名] を [新しい値] に修正してください。
+src/content/reviews/xxx.yaml の [フィールド名] を [新しい値] に修正してください。
 updatedAt も今日の日付（YYYY-MM-DD）に更新してください。
-※ reviews.js 側も該当フィールドがあれば同様に更新してください。
+※ reviews-list.csv 側も該当列があれば同様に更新してください。
 ```
 
 ---
@@ -113,14 +113,14 @@ npm run deploy
 
 GitHub Pages に自動デプロイされる。ビルド成果物は `dist/` に出力され、`gh-pages` ブランチにプッシュされる。
 
-**公開前確認ルール：** レビュー追加・修正作業（3ファイル更新＋`reviews-list.csv`）が完了した時点で作業を止める。`npm run deploy` は人間からの明示的な指示があるまで実行しない。
+**公開前確認ルール：** レビュー追加・修正作業（YAML 1ファイル＋`reviews-list.csv`）が完了した時点で作業を止める。`npm run deploy` は人間からの明示的な指示があるまで実行しない。
 
 ---
 
 ## 改善ログ自動更新ルール
 
 - サイトに修正・変更を加えた場合（レビュー記事の追加を除く）、`サイト改善ログ.xlsx` への追記も指示なしで自動的に行う。
-- **レビュー記事の新規追加は改善ログの対象外。** レビュー追加時はデータ3ファイル＋`reviews-list.csv`の更新のみ。
+- **レビュー記事の新規追加は改善ログの対象外。** レビュー追加時は YAML 1ファイル＋`reviews-list.csv`の更新のみ。
 - ファイル形式：Excel(.xlsx)。`generate-kaizen-log.cjs` を `node generate-kaizen-log.cjs` で実行して生成する。
 - 構成：
   - **目次シート：** 日付・概要・変更の大きさの一覧

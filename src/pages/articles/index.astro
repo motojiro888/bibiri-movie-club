@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { articles } from '../../data/articles.js';
-import { reviews } from '../../data/reviews/index.js';
+import { getReviews } from '../../utils/reviews.js';
 
 const base = import.meta.env.BASE_URL;
+const reviews = await getReviews();
 ---
 <BaseLayout title="まとめ記事一覧｜ビビリ映画部" description="ビビリ映画部のまとめ記事一覧。監督別・テーマ別に複数作品を比較レビュー。">
 

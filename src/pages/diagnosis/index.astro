@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { reviews } from '../../data/reviews/index.js';
+import { getReviews } from '../../utils/reviews.js';
 
 const base = import.meta.env.BASE_URL;
+const reviews = await getReviews();
 
 // 診断に必要な項目だけを抜き出した軽量データ（synopsis・timestamps等の本文は含めない）
 const movies = reviews.map(r => ({

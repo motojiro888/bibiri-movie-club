@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { reviews } from '../data/reviews/index.js';
+import { getReviews } from '../utils/reviews.js';
 import { articles } from '../data/articles.js';
 
 const base = import.meta.env.BASE_URL;
+const reviews = await getReviews();
 const totalCount = reviews.length;
 ---
 

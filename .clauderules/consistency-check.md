@@ -4,64 +4,50 @@
 
 ---
 
-## STEP 1｜ファイル間の数値同期チェック（自動修正可）
+## STEP 1｜スキーマチェック（自動）
 
-対象ファイル：`[id].js` → `index.js` → `reviews.js`
+`npm run build` を実行する。`src/content.config.js` のスキーマが、以下をすべて自動でチェックする。エラーが出たら、表示されたファイル・項目を直して再実行する。直し方が判断できない内容（スコアの値そのものなど）は人間に報告して止まる。
 
-| チェック項目 | [id].js の参照先 | reviews.js の対応フィールド |
-|---|---|---|
-| bikkuri | `bikkuri` | `bikkuri` |
-| guro | `guro` | `guro` |
-| difficulty | `difficulty` | `difficulty` |
-| animal | `animal` | `animal` |
-| genres | `genres` | `genres` |
-| publishedAt | `publishedAt` | `publishedAt` |
-| updatedAt | `updatedAt` | `updatedAt` |
-| image パス | `/assets/images/[id].webp` | `/bibiri-movie-club/assets/images/[id].webp` |
-
-**自動修正ルール**
-- 数値の不一致（bikkuri・guro）→ `[id].js` を正として `reviews.js` を上書き
-- image パスのプレフィックス差異（`/bibiri-movie-club/` の有無）は仕様。修正しない
-
----
-
-## STEP 2｜フィールド存在チェック（自動検出・人間判断）
-
-`[id].js` に以下がすべて存在するか確認する。欠落があれば人間に報告して止まる。
-
-必須フィールド一覧：
-- `id` / `title` / `titleEn` / `year`
-- `genres`（配列）/ `difficulty` / `animal`
+必須項目の欠落：
+- `title` / `titleEn` / `year`
+- `genres`（1件以上）/ `difficulty` / `animal`
 - `animalLabel` / `animalDesc`
 - `bikkuri` / `guro`
 - `image` / `motojiroImg` / `motojiroAlt`
-- `publishedAt` / `updatedAt`
-- `synopsis` / `meta` / `verdict`
-- `fearCards`（4件）/ `timestamps`（1件以上）
+- `publishedAt` / `updatedAt` / `sortOrder`
+- `synopsis` / `meta`（runtime・genre・country・director・cast）/ `verdict`
+- `fearCards`（4件）/ `timestamps`
 - `motojiroComment` / `fitOk` / `fitNg`
+- 想定外の項目名（書き間違い）もエラーになる
 
----
-
-## STEP 3｜値の形式チェック（自動検出・人間判断）
-
-以下の形式違反を検出したら人間に報告して止まる。
-
+値の形式：
 - `difficulty` が `beginner` / `mid` / `advanced` 以外
 - `animal` が `safe` / `warn` / `danger` 以外
-- `animalLabel` が `animal` 値と不一致
-  - safe → `✅ 安全`
-  - warn → `⚠️ 注意`
-  - danger → `❌ 危険`
-- `bikkuri` / `guro` が 1〜5 の整数以外
-- `fearCards` の件数が 4 件以外
-- `fearCards[*].score` が 1〜5 の整数以外
-- `timestamps[*].level` が `high` / `mid` / `low` 以外
-- `publishedAt` / `updatedAt` が `YYYY-MM-DD` 形式以外
-- `image` が `/assets/images/[id].webp` 形式以外
+- `animalLabel` が `animal` 値と不一致（safe → `✅ 安全`、warn → `⚠️ 注意`、danger → `❌ 危険`）
+- `bikkuri` / `guro` / `fearCards[*].score` が 1〜5 の整数以外
+- `bikkuri` / `guro` が fearCards のびっくり度・グロ度のスコアと不一致
+- `fearCards` が4件でない、または順番・アイコン・タイトルが規定と違う
+- `timestamps` の各項目が3モード（.clauderules/timestamps.md）のどれの形にも合わない
+- `type: none` がほかの項目と混ざっている
+- `publishedAt` / `updatedAt` が `YYYY-MM-DD` 形式以外、または updatedAt が publishedAt より前
+- `image` が `/assets/images/[英数字とハイフン].webp` 形式以外
+- `motojiroImg` が5種類以外
+- `synopsis` が150字を超えている
+- `sortOrder` がほかの作品と重複している
+
+**スキーマで許可しているもの（エラーにならない）：**
+- `timestamps: []`（詳細ページで「準備中」表示。未取得の作品のみ）
 
 ---
 
-## STEP 4｜人間レビュー必須項目（自動化しない）
+## STEP 2｜スキーマでは見られない項目（Claude Code が確認）
+
+- `image` のファイルが `public/assets/images/` に実在するか（ない場合は人間にサムネイル追加を依頼する）
+- `reviews-list.csv` の該当行が YAML の内容と一致しているか
+
+---
+
+## STEP 3｜人間レビュー必須項目（自動化しない）
 
 Claude Code はここまでで止まり、以下を人間に確認を促すメッセージを出す。
 
@@ -76,7 +62,7 @@ Claude Code はここまでで止まり、以下を人間に確認を促すメ�
 
 ## 完了条件
 
-STEP 1〜3 が通過したあと、以下を必ず更新する：
+STEP 1〜2 が通過したあと、以下を必ず更新する：
 
-- `reviews-list.csv`（public 列は手動のため空欄のまま）
-- `サイト改善ログ.md`（magnitude: 小、target: Claude Code）
+- `reviews-list.csv`（公開状況の列は手動のため空欄のまま）
+- 改善ログは CLAUDE.md の「改善ログ自動更新ルール」に従う（レビューの新規追加は対象外）

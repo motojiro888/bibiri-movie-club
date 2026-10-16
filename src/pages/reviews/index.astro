@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { reviews } from '../../data/reviews/index.js';
+import { getReviews } from '../../utils/reviews.js';
 
 const base = import.meta.env.BASE_URL;
+const reviews = await getReviews();
 const sorted = [...reviews].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 
 function stars(count, max = 5) {

@@ -1,14 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { reviews } from '../../data/reviews/index.js';
-import { reviews as reviewsSummary } from '../../data/reviews.js';
+import { getReviews } from '../../utils/reviews.js';
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const reviews = await getReviews();
   return reviews.map(r => ({ params: { id: r.id }, props: { review: r } }));
 }
 
 const { review } = Astro.props;
 const base = import.meta.env.BASE_URL;
+const reviews = await getReviews();
 
 function stars(count, max = 5) {
   return Array.from({length: max}, (_, i) => `<span class="star ${i < count ? 'on' : 'off'}">★</span>`).join('');
@@ -18,7 +19,7 @@ const animalSectionClass = { safe: '', warn: 'animal-warn', danger: 'animal-dang
 const levelClass = { high: 'level-high', mid: 'level-mid', low: 'level-low' };
 
 const difficultyNum = { beginner: 1, mid: 2, advanced: 3 };
-const relatedReviews = reviewsSummary
+const relatedReviews = reviews
   .filter(r => r.id !== review.id)
   .map(r => {
     let score = r.genres.filter(g => review.genres.includes(g)).length;
@@ -223,7 +224,7 @@ const animalClass = { safe: 'animal-badge-safe', warn: 'animal-badge-warn', dang
         {relatedReviews.map(r => (
           <a href={`${base}/reviews/${r.id}/`} class="review-card-link" style="min-width:300px; flex:1; max-width:none;">
             <article class="review-card">
-              <div class="card-img"><img src={r.image} alt={r.title}></div>
+              <div class="card-img"><img src={`${base}${r.image}`} alt={r.title}></div>
               <div class="card-info">
                 <div class="card-title-row"><span class="card-title">{r.title}</span><span class="card-year">{r.year}</span></div>
                 <div class="card-labels">
