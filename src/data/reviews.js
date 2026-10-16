@@ -587,4 +587,18 @@ export const reviews = [
     publishedAt: '2026-09-22',
     updatedAt: '2026-09-22',
   },
+  {
+    id: 'toxic-avenger',
+    title: '悪魔の毒々モンスター',
+    titleEn: 'The Toxic Avenger',
+    year: 1984,
+    genres: ['ホラーコメディ', 'スプラッター'],
+    difficulty: 'mid',
+    animal: 'danger',
+    bikkuri: 1,
+    guro: 4,
+    image: '/bibiri-movie-club/assets/images/toxic-avenger.webp',
+    publishedAt: '2026-10-16',
+    updatedAt: '2026-10-16',
+  },
 ];
