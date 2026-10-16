@@ -21,11 +21,17 @@ src/
       hereditary.js     ← 個別レビューデータ（詳細）
       midsommar.js
       ... （1映画 = 1ファイル）
-    reviews.js          ← カード表示用フラット配列（一覧・フィルター用）
+    reviews.js          ← 軽量フラット配列（詳細ページ下部の「関連作品」でのみ使用）
+    articles.js         ← まとめ記事データ
   pages/
     reviews/
       [id].astro        ← 詳細ページ（動的ルーティング）
       index.astro       ← レビュー一覧ページ
+    articles/
+      [id].astro        ← まとめ記事詳細ページ
+      index.astro       ← まとめ記事一覧ページ
+    diagnosis/
+      index.astro       ← ホラー映画診断ページ
     index.astro         ← トップページ
   layouts/
     BaseLayout.astro
@@ -51,9 +57,10 @@ public/
 
 ## ソート順のルール
 
-- `reviews.js` の配列順 = 一覧ページの表示順
-- ソートキーは `publishedAt`（編集時の `updatedAt` 変更で順番が変わらないようにするため）
-- 新しい映画は配列の末尾に追加する
+- 一覧ページ（`reviews/index.astro`）は `reviews/index.js` を読み込み、`publishedAt` の降順（新しい順）にソートして表示する。配列の並び順は表示順に影響しない
+- ソートキーが `publishedAt` なのは、編集時の `updatedAt` 変更で順番が変わらないようにするため
+- 一覧の表示順を変えたいときは、配列ではなく `publishedAt` を調整する（同日公開の作品どうしの順番は配列順に依存するため、入れ替えたい場合は配列順を変える）
+- 新しい映画は `reviews/index.js`・`reviews.js` とも配列の末尾に追加する（管理しやすさのための慣習）
 
 ---
 
